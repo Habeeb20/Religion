@@ -11,7 +11,8 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.UserAPI_URL}/profile`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}profile`);
+        console.log(response.data); // Log response data to ensure it's correct
         setUser(response.data);
         setFormData(response.data);
       } catch (err) {
@@ -27,6 +28,7 @@ const DashboardPage = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    console.log(formData); // Log formData before sending the PUT request
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}update-profile`, formData);
       alert('Profile updated successfully');
@@ -55,7 +57,7 @@ const DashboardPage = () => {
         <input
           type="text"
           name="firstname"
-          value={formData.firstname}
+          value={formData.firstname || ''}
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           required
@@ -63,7 +65,7 @@ const DashboardPage = () => {
         <input
           type="text"
           name="lastname"
-          value={formData.lastname}
+          value={formData.lastname || ''}
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           required
@@ -71,7 +73,7 @@ const DashboardPage = () => {
         <input
           type="email"
           name="email"
-          value={formData.email}
+          value={formData.email || ''}
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           disabled
@@ -79,7 +81,7 @@ const DashboardPage = () => {
         <input
           type="text"
           name="state"
-          value={formData.state}
+          value={formData.state || ''}
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           required
@@ -87,7 +89,7 @@ const DashboardPage = () => {
         <input
           type="text"
           name="localGovtArea"
-          value={formData.localGovtArea}
+          value={formData.localGovtArea || ''}
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           required

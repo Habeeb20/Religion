@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import {motion} from 'framer-motion'
+import toast from 'react-hot-toast';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import im from '../../assets/religion/Rectangle 6.png'
+import im1 from '../../assets/religion/Rectangle 7.png'
+import im2 from '../../assets/religion/Rectangle 8.png'
+import im3 from '../../assets/religion/Rectangle 9.png'
+import { Link } from 'react-router-dom';
+import { FaFacebookF, FaTwitter, FaGoogle } from 'react-icons/fa'; 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -13,6 +22,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}login`, formData);
       if (response.data) {
@@ -20,6 +30,8 @@ const Login = () => {
       }
     } catch (err) {
       setError(err.response.data.message);
+    } finally{
+      setIsLoading(false);
     }
   };
 
@@ -45,13 +57,49 @@ const Login = () => {
             onChange={handleInputChange}
             required
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          <motion.button
+            className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-700 to-emerald-600 text-white 
+            font-bold rounded-lg shadow-lg hover:from-blue-800
+            hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+             focus:ring-offset-gray-900 transition duration-200'
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type='submit'
+            disabled={isLoading}
           >
-            Login
-          </button>
+            {isLoading ? <AiOutlineLoading3Quarters className=' animate-spin mx-auto' size={24} /> : "Login"}
+          </motion.button>
         </form>
+        <Link to='/forgot-password'>
+          <h4 className='p-3 hover:text-indigo-800'>Forgot Password?</h4>
+        </Link>
+        <div className="mt-6 text-center text-gray-600">or</div>
+
+{/* Social Media Login Section */}
+<div className="flex justify-center gap-4 mt-4">
+  <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
+    <FaFacebookF size={20} />
+  </motion.a>
+  <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
+    <FaTwitter size={20} />
+  </motion.a>
+  <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
+    <FaGoogle size={20} />
+  </motion.a>
+</div>
+<div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Dont have an account? <a href="/Signup" className="text-[#080C89] underline">Sign in</a>
+          </p>
+        </div>
+           {/* Image Section (For Bottom Images) */}
+           <div className="flex justify-center gap-2 mt-6">
+          <img src={im} alt="Gallery Image 1" className="w-20 h-20 object-cover" />
+          <img src={im1} alt="Gallery Image 2" className="w-20 h-20 object-cover" />
+          <img src={im2} alt="Gallery Image 3" className="w-20 h-20 object-cover" />
+          <img src={im3} alt="Gallery Image 4" className="w-20 h-20 object-cover" />
+        </div>
+
       </div>
     </div>
   );

@@ -4,6 +4,10 @@ import nodemailer from 'nodemailer';
 import cloudinary from 'cloudinary';
 import {User} from '../models/user.model.js';
 import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js';
+import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken"
+
+
 
  cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -15,8 +19,8 @@ import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js
 const transporter = nodemailer.createTransport({
   service: 'gmail', // Example: Gmail
   auth: {
-    user: process.env.EMAIL_USER, // Your email
-    pass: process.env.EMAIL_PASS, // Your password
+    user:"babatundeademola112@gmail.com",
+    pass:"pknseuxqxzkoqdjg"
   },
 });
 
@@ -270,17 +274,30 @@ export const forgotPassword = async (req, res) => {
 			return res.status(400).json({ success: false, message: "User not found" });
 		}
 
-		// Generate reset token
-		const resetToken = crypto.randomBytes(20).toString("hex");
-		const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000; // 1 hour
+	  // Generate a reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetPasswordToken = jwt.sign({ resetToken }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-		user.resetPasswordToken = resetToken;
-		user.resetPasswordExpiresAt = resetTokenExpiresAt;
+    // Send an email with the reset link
+    const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`;
 
-		await user.save();
+    // Setup Nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user:"babatundeademola112@gmail.com",
+        pass:"pknseuxqxzkoqdjg"
+      },
+    });
 
-		// send email
-		await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetToken}`);
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Password Reset',
+      text: `You requested a password reset. Click the link below to reset your password: \n\n ${resetLink}`,
+    };
+
+    await transporter.sendMail(mailOptions);
 
 		res.status(200).json({ success: true, message: "Password reset link sent to your email" });
 	} catch (error) {
@@ -290,34 +307,31 @@ export const forgotPassword = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-	try {
+	
 		const { token } = req.params;
-		const { password } = req.body;
+		const { newPassword } = req.body;
 
-		const user = await User.findOne({
-			resetPasswordToken: token,
-			resetPasswordExpiresAt: { $gt: Date.now() },
-		});
-
-		if (!user) {
-			return res.status(400).json({ success: false, message: "Invalid or expired reset token" });
-		}
-
-		// update password
-		const hashedPassword = await bcryptjs.hash(password, 10);
-
-		user.password = hashedPassword;
-		user.resetPasswordToken = undefined;
-		user.resetPasswordExpiresAt = undefined;
-		await user.save();
-
-		await sendResetSuccessEmail(user.email);
-
-		res.status(200).json({ success: true, message: "Password reset successful" });
-	} catch (error) {
-		console.log("Error in resetPassword ", error);
-		res.status(400).json({ success: false, message: error.message });
-	}
+    try {
+      // Verify the reset token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const { resetToken } = decoded;
+  
+      // Find the user by the token
+      const user = await User.findOne({ resetToken });
+      if (!user) {
+        return res.status(404).json({ message: 'Invalid token' });
+      }
+  
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+  
+      await user.save();
+  
+      res.status(200).json({ message: 'Password reset successfully' });
+    } catch (err) {
+      res.status(500).json({ message: 'Server error' });
+    }
 };
 
 export const checkAuth = async (req, res) => {
