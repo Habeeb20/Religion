@@ -4,6 +4,16 @@ import { verifyToken } from "../middleware/verifyToken.js";
 import upload from "../upload.js";
 
 const router = express.Router();
+
+const auth = (req, res, next) => {
+    const token = req.header('Authorization').replace('Bearer ', '');
+    jwt.verify(token, 'your_jwt_secret_key', (err, decoded) => {
+      if (err) return res.status(401).send('Unauthorized');
+      req.user = decoded;
+      next();
+    });
+  };
+
 router.get("/check-auth", verifyToken, checkAuth);
 router.post("/signup", upload, signup)
 router.post("/login", login)
@@ -13,5 +23,5 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword)
 router.put("/edit", verifyToken, updateUserProfile)
 router.delete("/deleteaccount",verifyToken, deleteUserAccount)
-router.get("/getprofile", verifyToken, getUserProfile)
+router.get("/getprofile", auth, getUserProfile)
 export default router

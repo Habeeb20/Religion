@@ -81,8 +81,7 @@ export const signup = async (req, res) => {
     // Send OTP email
     await sendOTPEmail(user.email, verificationToken);
 
-    // Generate JWT and set it in cookie
-    generateTokenAndSetCookie(res, user._id);
+ 
 
     res.status(201).json({
       message: 'User registered successfully. Please check your email to verify your account',
@@ -135,16 +134,21 @@ export const login = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid credentials' });
     }
 
-    // Generate JWT and set it in cookie
-    generateTokenAndSetCookie(res, user._id);
-
+    
     user.lastLogin = new Date();
     await user.save();
+
+    // // Generate JWT and set it in cookie
+    // generateTokenAndSetCookie(res, user._id);
+    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+  
+
+
 
     res.status(200).json({
       success: true,
       message: 'Logged in successfully',
-      user: { ...user._doc, password: undefined },
+      user: { ...user._doc, password: undefined, token },
     });
   } catch (error) {
     console.error('Error in login: ', error);

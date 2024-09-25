@@ -4,100 +4,64 @@ import axios from 'axios';
 
 const DashboardPage = () => {
   const [user, setUser] = useState(null);
-  const [formData, setFormData] = useState({});
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}profile`);
-        console.log(response.data); // Log response data to ensure it's correct
+        const token = localStorage.getItem('token'); 
+
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/getprofile`, {
+          headers: {
+            Authorization: `Bearer ${token}` 
+          },
+          withCredentials: true
+        });
+        console.log(response.data);
         setUser(response.data);
-        setFormData(response.data);
       } catch (err) {
+        console.error(err); // Log error for debugging
         setError('Failed to fetch profile');
+      } finally {
+        setLoading(false);
       }
     };
     fetchProfile();
   }, []);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    console.log(formData); // Log formData before sending the PUT request
-    try {
-      await axios.put(`${import.meta.env.VITE_API_URL}update-profile`, formData);
-      alert('Profile updated successfully');
-    } catch (err) {
-      setError('Failed to update profile');
-    }
-  };
-
   const handleDelete = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}delete-account`);
+      const token = localStorage.getItem('token'); // Retrieve token for the delete request
+      await axios.delete(`${import.meta.env.VITE_API_URL}delete-account`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Include the token in headers
+        }
+      });
       alert('Account deleted successfully');
       navigate('/signup');
     } catch (err) {
+      console.error(err);
       setError('Failed to delete account');
     }
   };
 
-  if (!user) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
+
+  if (!user) return <p>User not found</p>;
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Profile</h2>
       {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleUpdate} className="space-y-4">
-        <input
-          type="text"
-          name="firstname"
-          value={formData.firstname || ''}
-          onChange={handleInputChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="lastname"
-          value={formData.lastname || ''}
-          onChange={handleInputChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email || ''}
-          onChange={handleInputChange}
-          className="w-full p-2 border rounded"
-          disabled
-        />
-        <input
-          type="text"
-          name="state"
-          value={formData.state || ''}
-          onChange={handleInputChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="localGovtArea"
-          value={formData.localGovtArea || ''}
-          onChange={handleInputChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-          Update Profile
-        </button>
-      </form>
+      <div className="space-y-4">
+        <p><strong>First Name:</strong> {user.firstname}</p>
+        <p><strong>Last Name:</strong> {user.lastname}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>State:</strong> {user.state}</p>
+        <p><strong>Local Government Area:</strong> {user.localGovtArea}</p>
+      </div>
       <button
         className="bg-red-500 text-white p-2 rounded mt-4"
         onClick={handleDelete}

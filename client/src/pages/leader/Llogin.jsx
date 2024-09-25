@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion'
 import toast from 'react-hot-toast';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import im from '../../assets/religion/Rectangle 6.png';
-import im1 from '../../assets/religion/Rectangle 7.png';
-import im2 from '../../assets/religion/Rectangle 8.png';
-import im3 from '../../assets/religion/Rectangle 9.png';
+import im from '../../assets/religion/Rectangle 6.png'
+import im1 from '../../assets/religion/Rectangle 7.png'
+import im2 from '../../assets/religion/Rectangle 8.png'
+import im3 from '../../assets/religion/Rectangle 9.png'
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTwitter, FaGoogle } from 'react-icons/fa';
-
-const Login = () => {
+import { FaFacebookF, FaTwitter, FaGoogle } from 'react-icons/fa'; 
+const Llogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,22 +23,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(''); 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, formData);
-      console.log(response)
-      if (response.ok) {
-        console.log('login successful', data.token)
-        localStorage.setItem('token', data.token)
-     
-        navigate('/profile');
-      } else {
-        setError('Login failed. Please try again.');
+      const response = await axios.post(`${import.meta.env.VITE_API_URL2}llogin`, formData);
+      if (response.data) {
+        navigate('/lprofile');
       }
     } catch (err) {
-      console.log(err)
-      setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
-    } finally {
+      setError(err.response.data.message);
+    } finally{
       setIsLoading(false);
     }
   };
@@ -76,41 +67,42 @@ const Login = () => {
             type='submit'
             disabled={isLoading}
           >
-            {isLoading ? <AiOutlineLoading3Quarters className='animate-spin mx-auto' size={24} /> : "Login"}
+            {isLoading ? <AiOutlineLoading3Quarters className=' animate-spin mx-auto' size={24} /> : "Login"}
           </motion.button>
         </form>
-        <Link to='/forgot-password'>
+        <Link to='/lforgot-password'>
           <h4 className='p-3 hover:text-indigo-800'>Forgot Password?</h4>
         </Link>
         <div className="mt-6 text-center text-gray-600">or</div>
 
-        {/* Social Media Login Section */}
-        <div className="flex justify-center gap-4 mt-4">
-          <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
-            <FaFacebookF size={20} />
-          </motion.a>
-          <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
-            <FaTwitter size={20} />
-          </motion.a>
-          <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
-            <FaGoogle size={20} />
-          </motion.a>
-        </div>
-        <div className="mt-6 text-center">
+{/* Social Media Login Section */}
+<div className="flex justify-center gap-4 mt-4">
+  <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
+    <FaFacebookF size={20} />
+  </motion.a>
+  <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
+    <FaTwitter size={20} />
+  </motion.a>
+  <motion.a href="#" className="p-3 bg-[#080C89] rounded-full text-white" whileHover={{ scale: 1.1 }}>
+    <FaGoogle size={20} />
+  </motion.a>
+</div>
+<div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account? <a href="/signup" className="text-[#080C89] underline">Sign up</a>
+            Dont have an account? <a href="/lsignup" className="text-[#080C89] underline">Sign in</a>
           </p>
         </div>
-        {/* Image Section (For Bottom Images) */}
-        <div className="flex justify-center gap-2 mt-6">
+           {/* Image Section (For Bottom Images) */}
+           <div className="flex justify-center gap-2 mt-6">
           <img src={im} alt="Gallery Image 1" className="w-20 h-20 object-cover" />
           <img src={im1} alt="Gallery Image 2" className="w-20 h-20 object-cover" />
           <img src={im2} alt="Gallery Image 3" className="w-20 h-20 object-cover" />
           <img src={im3} alt="Gallery Image 4" className="w-20 h-20 object-cover" />
         </div>
+
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Llogin;

@@ -37,6 +37,10 @@ const leaderSchema = new mongoose.Schema({
   gallery: [{ type: String }],
   reviewRating: { type: Number, default: 0 },
   viewCount: { type: Number, default: 0 },
+  resetPasswordToken: String,
+  resetPasswordExpiresAt: Date,
+  verificationToken: String,
+  verificationTokenExpiresAt: Date,
 
 });
 

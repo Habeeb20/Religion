@@ -5,7 +5,7 @@ import crypto from "crypto"
 import  jwt from "jsonwebtoken";
 import cloudinary from "cloudinary"
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
-
+import bcryptjs from "bcryptjs"
 
 
 
@@ -20,32 +20,27 @@ const generateUniqueNumber = () => {
     return `RL-${crypto.randomBytes(4).toString('hex')}`;
   };
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
+  
+const transporter = nodemailer.createTransport({
+    service: 'gmail', 
     auth: {
       user:"babatundeademola112@gmail.com",
       pass:"pknseuxqxzkoqdjg"
-    }
+    },
   });
-
-
-  const sendOTPEmail =async (refereeEmail, otp) => {
-
+  
+  // Helper function to send OTP
+  const sendOTPEmail = async (refereeemail, otp) => {
     const mailOptions = {
-      from:"babatundeademola112@gmail.com",
-      to: refereeEmail,
-      subject: 'OTP for Referee Confirmation',
-      text: `Your OTP is: ${otp}`
+      from: process.env.EMAIL_USER,
+      to: refereeemail,
+      subject: 'Verify your email',
+      text: `Your verification code is: ${otp}`,
     };
   
-        await transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log('Error sending email:', err);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
+    await transporter.sendMail(mailOptions);
   };
+  
 
   export const signup = async(req, res) => {
     const {title, firstname, lastname,ministryname, email, password, bio, religion,category,country,state,localGovtArea, address,yearsInProfession,accountNumber,accountName,bankName,refereephone, relationship, refereename, refereeemail } = req.body;
@@ -119,35 +114,50 @@ const generateUniqueNumber = () => {
 
 
   export const verifyEmail = async (req, res) => {
-    const {code} = req.body;
-
+    const { code } = req.body;
+  
     try {
-        const user = await Leader.findOne({
-            verificationToken:code,
-            verificationTokenExpiresAt: {$gt: Date.now()},
-
-        })
-
-        if(!user){
-            return res.status(400).json({success: false, message:"invalid or expired verification code"})
-        }
-        user.isVerified = true;
-        user.verificationToken = undefined;
-        user.verificationTokenExpiresAt = undefined;
-    
-        await user.save();
-
-        res.status(200).json({
-            success: true,
-            message: 'Email verified successfully',
-            user: { ...user._doc, password: undefined },
-          });
+      // Log the received code
+      console.log('Received verification code:', code);
+  
+      // Find the user with the corresponding verification token and check if it hasn't expired
+      const user = await Leader.findOne({
+        verificationToken: code,
+        verificationTokenExpiresAt: { $gt: Date.now() },
+      });
+  
+      if (!user) {
+        // Log if no user is found or the token has expired
+        console.log('Invalid or expired verification token');
+        return res.status(400).json({ success: false, message: 'Invalid or expired verification code' });
+      }
+  
+      // Log details of the found user
+      console.log('User found:', user);
+      console.log('Current time:', Date.now());
+      console.log('Token expires at:', user.verificationTokenExpiresAt);
+  
+      // Mark the user as verified and clear the verification token
+      user.isVerified = true;
+      user.verificationToken = undefined;
+      user.verificationTokenExpiresAt = undefined;
+  
+      // Save the updated user information
+      await user.save();
+  
+      // Send the success response
+      res.status(200).json({
+        success: true,
+        message: 'Email verified successfully',
+        user: { ...user._doc, password: undefined }, // Do not return the password in the response
+      });
     } catch (error) {
-        console.error('Error in verifyEmail: ', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+      // Log any errors that occur
+      console.error('Error in verifyEmail:', error);
+      res.status(500).json({ success: false, message: 'Server error' });
     }
-  }
-
+  };
+  
 
   export const login = async (req, res) => {
     const {email, password} = req.body;
@@ -261,7 +271,7 @@ const generateUniqueNumber = () => {
 
   //Get user profile
 
-  export const getUserProfile = async(reqq, res) => {
+  export const getUserProfile = async(req, res) => {
     try {
         const userId = req.user._id;
         const user =  await Leader.findById(userId).select('-password')

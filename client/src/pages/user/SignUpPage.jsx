@@ -59,7 +59,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#FFF9E8]"> {/* Light cream background */}
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#FFF9E8] mt-7"> {/* Light cream background */}
       <div className="w-full max-w-md bg-white p-8 rounded shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-[#080C89]">Sign Up</h2>
         {error && <p className="text-red-500">{error}</p>}

@@ -9,6 +9,11 @@ import ResetPassword from './pages/user/ResetPassword';
 import { ProtectedRoute } from './pages/user/ProtectRoute';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
+import Lsignup from './pages/leader/Lsignup';
+import Llogin from './pages/leader/Llogin';
+import LverifyEmail from './pages/leader/Lverify-email';
+import LforgotPassword from './pages/leader/LforgotPassword';
+import LProfile from './pages/leader/LProfile';
 const App = () => {
   return (
 
@@ -21,14 +26,34 @@ const App = () => {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password/:token' element={<ResetPassword />} />
+
+       
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              
                 <Profile />
-              </ProtectedRoute>
+             
             }
           />
+
+
+             //religiousleaders
+          <Route path='lsignup' element={<Lsignup />} />
+          <Route path='llogin' element={<Llogin />} />
+          <Route path='lverify-email' element={<LverifyEmail />} />
+          <Route path='lforgot-password' element={<LforgotPassword />} />
+          <Route path='lresetpassword/:token' element={<Lsignup />} />
+
+          <Route
+            path="/lprofile"
+            element={
+           
+                <LProfile />
+            
+            }
+          />
+
         </Routes>
       </div>
       <Toaster />
