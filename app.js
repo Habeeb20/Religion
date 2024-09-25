@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cloudinary from "cloudinary"
 import multer from "multer";
+import leaderrouter from "./routes/leader.route.js";
 dotenv.config();
 
 const __dirname = path.resolve();
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use('/uploads',express.static(path.join(__dirname, '/client/dist')));
 app.use(morgan('dev'))
 app.use('/api/users', router)
+app.use('/api/leaders', leaderrouter)
 
 
 
