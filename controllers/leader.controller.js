@@ -168,16 +168,19 @@ const transporter = nodemailer.createTransport({
             return res.status(400).json({success: false, message: "incorrect crredentials"})
         }
 
-        generateTokenAndSetCookie(res, user._id);
+        // generateTokenAndSetCookie(res, user._id);
 
         user.lastLogin = new Date();
-        await user.save();
+        // await user.save();
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
         res.status(200).json({
             success: true,
             message:'Logged in successfully',
-            user:{...user._doc, password: undefined}
-        })
+            user,
+            token
+        });
+        console.log('user details',user, token)
     } catch (error) {
         console.error('error in login ', error);
         res.status(500).json({success: false, message: 'server error'})

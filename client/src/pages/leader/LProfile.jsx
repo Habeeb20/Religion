@@ -8,7 +8,7 @@ const LProfile = () => {
     // Assuming user details are stored in localStorage after login
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL2}getprofile`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL2}/getprofile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

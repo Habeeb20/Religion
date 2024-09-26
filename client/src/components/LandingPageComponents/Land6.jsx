@@ -44,7 +44,7 @@ const Land6 = () => {
           </div>
         </div>
         <p className="text-black-700 mb-2">bio: {bio}</p>
-        <p className="text-black-500 mb-2">years of being a/an {title}: {yearsInProfession}</p>
+        <p className="text-black-500 mb-2">years of being a/an {title}: {yearsInProfession}  years</p>
         <p className="text-black-500 mb-2">state: {state}</p>
         <p className="text-black-500 mb-2">LGA: {localGovtArea}</p>
         <p className="text-black-500 mb-2">Address: {address}</p>

@@ -11,7 +11,7 @@ const LforgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL2}lforgot-password`, { email });
+      await axios.post(`${import.meta.env.VITE_API_URL2}/lforgot-password`, { email });
       toast.success("Password reset email sent");
       setSuccess("email has been sent sucessfully")
         navigate('/lreset-password/:token')

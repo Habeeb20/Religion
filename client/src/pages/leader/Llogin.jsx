@@ -24,7 +24,7 @@ const Llogin = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL2}llogin`, formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL2}/llogin`, formData);
       if (response.data) {
         navigate('/lprofile');
       }

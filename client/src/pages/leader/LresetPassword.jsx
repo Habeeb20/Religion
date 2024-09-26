@@ -23,7 +23,7 @@ const LresetPassword = () => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL2}lreset-password/${token}`, { newPassword });
+      await axios.post(`${import.meta.env.VITE_API_URL2}/lreset-password/${token}`, { newPassword });
       toast.success("Password reset successfully");
       navigate('/llogin');
     } catch (err) {

@@ -10,7 +10,7 @@ const VerifyEmail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}verify-email`, { code: otp });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/verify-email`, { code: otp });
       if (response.data.success) {
         navigate('/login');
       }

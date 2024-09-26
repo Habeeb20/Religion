@@ -41,7 +41,7 @@ const Signup = () => {
         form.append(key, formData[key]);
       });
 
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}signup`, form, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/signup`, form, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

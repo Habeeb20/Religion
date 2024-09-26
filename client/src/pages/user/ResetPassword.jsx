@@ -23,7 +23,7 @@ const ResetPassword = () => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}reset-password/${token}`, { newPassword });
+      await axios.post(`${import.meta.env.VITE_API_URL}/reset-password/${token}`, { newPassword });
       toast.success("Password reset successfully");
       navigate('/login');
     } catch (err) {

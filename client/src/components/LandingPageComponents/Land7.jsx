@@ -33,7 +33,7 @@ const Land7 = () => {
       );
       setFilteredMinisters(results);
     } else {
-      setFilteredMinisters(ministers);
+      setFilteredMinisters([]);
     }
   }, [searchTerm, ministers]);
 
@@ -74,28 +74,30 @@ const Land7 = () => {
       </div>
 
       {/* Search Results */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold text-indigo-900 mb-6">Search Results</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredMinisters.length > 0 ? (
-            filteredMinisters.map((minister, index) => (
-              <div key={index} className="bg-white p-4 rounded-md shadow-md">
-                <h3 className="text-sm font-semibold text-indigo-900">Name of Imam/pastor: {minister.title} {minister.firstname} {minister.lastname}</h3>
-                <p className="text-black-600 text-sm mb-2">LGA: {minister.localGovtArea}</p>
-                <p className="text-black-600 text-sm mb-2">church/mosque: {minister.ministryname}</p>
-                <p className="text-black-600 text-sm mb-2">Religion: {minister.religion}</p>
-                <div className="flex items-center">
-                  <a href={`mailto:${minister.email}`} className="text-indigo-600 hover:underline">
-                    {minister.email}
-                  </a>
+      {searchTerm && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold text-indigo-900 mb-6">Search Results</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {filteredMinisters.length > 0 ? (
+              filteredMinisters.map((minister, index) => (
+                <div key={index} className="bg-white p-4 rounded-md shadow-md">
+                  <h3 className="text-sm font-semibold text-indigo-900">Name of Imam/pastor: {minister.title} {minister.firstname} {minister.lastname}</h3>
+                  <p className="text-black-600 text-sm mb-2">LGA: {minister.localGovtArea}</p>
+                  <p className="text-black-600 text-sm mb-2">church/mosque: {minister.ministryname}</p>
+                  <p className="text-black-600 text-sm mb-2">Religion: {minister.religion}</p>
+                  <div className="flex items-center">
+                    <a href={`mailto:${minister.email}`} className="text-indigo-600 hover:underline">
+                      {minister.email}
+                    </a>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-600">No results found.</p>
-          )}
+              ))
+            ) : (
+              <p className="text-gray-600">No results found.</p>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Our Other Choices */}
       <div className="mt-12">

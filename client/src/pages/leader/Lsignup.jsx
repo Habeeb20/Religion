@@ -263,7 +263,7 @@ const Lsignup = () => {
             Object.keys(formData).forEach((key) => {
                 form.append(key, formData[key]);
             });
-            const response = await axios.post(`${import.meta.env.VITE_API_URL2}lsignup`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL2}/lsignup`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log(response.data);
