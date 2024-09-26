@@ -1,38 +1,38 @@
-
-
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
+import jwt from "jsonwebtoken"; // Make sure you import jwt
+import Chat from "./models/Chat"; // Adjust this import based on your project structure
 
 const app = express();
-
 const server = http.createServer(app);
 
-// Initialize the socket.io instance first before assigning it to `req`
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174"], // Ensure this is your frontend's correct address
+    origin: ["http://localhost:5173", "http://localhost:5174"],
     methods: ["GET", "POST"],
   },
 });
 
-// Middleware to attach io to the request object
-app.use((req, res, next) => {
-  req.io = io;
-  next();
+const userSocketMap = {}; // Holds the mapping of userId to socketId and can include names if necessary
+
+// Middleware to handle authentication
+io.use((socket, next) => {
+  const token = socket.handshake.query.token;
+  if (token) {
+    jwt.verify(token, 'your_jwt_secret', (err, decoded) => {
+      if (err) return next(new Error('Authentication error'));
+      socket.user = decoded; // Attach user info
+      next();
+    });
+  } else {
+    next(new Error('Authentication error'));
+  }
 });
-
-const userSocketMap = {}; // Holds the mapping of userId to socketId
-
-// Helper function to get the receiver's socket ID
-export const getReceiverSocketId = (receiverId) => {
-  return userSocketMap[receiverId];
-};
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  // Retrieve the user ID from the socket's handshake query
   const userId = socket.handshake.query.userId;
 
   // If a valid userId is provided
@@ -43,28 +43,49 @@ io.on("connection", (socket) => {
   // Emit the list of online users (IDs) to all clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-  // Handle disconnection
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-    delete userSocketMap[userId]; // Remove the user from the map
-    io.emit("getOnlineUsers", Object.keys(userSocketMap)); // Update the list of online users
+  socket.on('newMessage', async (data) => {
+    const newMessage = new Chat({
+      sender: data.sender,
+      message: data.message,
+      fileUrl: data.fileUrl || '',
+    });
+    await newMessage.save();
+    io.emit('message', newMessage);
   });
 
-  // Listen for callUser events from clients
+  socket.on('typing', (user) => {
+    socket.broadcast.emit('userTyping', user);
+  });
+
+  socket.on('stopTyping', () => {
+    socket.broadcast.emit('userStoppedTyping');
+  });
+
   socket.on("callUser", ({ userToCall, signalData, from, name }) => {
-    const receiverSocketId = userSocketMap[userToCall]; // Get the socket ID of the user to call
+    const receiverSocketId = userSocketMap[userToCall];
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("callUser", { signal: signalData, from, name });
     }
   });
 
-  // Listen for answerCall events from clients
   socket.on("answerCall", (data) => {
-    const callerSocketId = userSocketMap[data.to]; // Get the socket ID of the caller
+    const callerSocketId = userSocketMap[data.to];
     if (callerSocketId) {
       io.to(callerSocketId).emit("callAccepted", data.signal);
     }
   });
+
+  socket.on('disconnect', () => {
+    console.log("User disconnected:", socket.id);
+    delete userSocketMap[userId]; // Remove the user from the map
+    io.emit("getOnlineUsers", Object.keys(userSocketMap)); // Update the list of online users
+  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 export { app, server, io };
