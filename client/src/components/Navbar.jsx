@@ -19,8 +19,8 @@ const Navbar = () => {
 
   return (
     <>
-     <nav className="bg-indigo-900 text-white fixed top-0 w-full z-50 shadow-lg ">
-      <div className="container mx-auto flex justify-between items-center py-1 px-6">
+     <nav className="bg-indigo-900 text-white fixed top-0 w-full z-50 shadow-lg   ">
+      <div className="container mx-auto flex justify-between items-center py-1 px-6 m-1">
         <h1 className="text-2xl font-bold text-white">e-religion</h1>
 
         {/* Mobile hamburger menu */}

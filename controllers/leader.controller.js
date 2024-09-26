@@ -269,6 +269,53 @@ const transporter = nodemailer.createTransport({
 
 
 
+
+  //countleaders
+
+  export const getleaderscounts = async (req, res) => {
+    try {
+      const {state} = req.query;
+      if(!state || !Array.isArray(state)){
+        console.log("an error is here")
+        return res.status(400).json({message: "state query parameter must be an array of strings"})
+      }
+  
+      const counts = await Promise.all(state.map(async(sta)=> {
+        const count = await Leader.countDocuments({
+          state:{$regex: sta, $options: 'i'}
+        });
+        return {state: sta, count}
+      }))
+  
+      res.json(counts);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: error.message });
+    }
+  
+   }
+
+
+
+   //get all leaders
+
+   export const getAllLeaders = async (req, res) => {
+    try {
+      const ministers = await Leader.find();
+      res.status(200).json(ministers);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
+  
+
+
+
+
+
+
+
+
   //Get user profile
 
   export const getUserProfile = async(req, res) => {

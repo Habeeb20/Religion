@@ -11,35 +11,46 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
+        console.log(token);
+
+        if (!token) {
+          throw new Error('No token found');
+        }
 
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/getprofile`, {
           headers: {
-            Authorization: `Bearer ${token}` 
+            Authorization: `Bearer ${token}`,
           },
           withCredentials: true
         });
-        console.log(response.data);
         setUser(response.data);
       } catch (err) {
-        console.error(err); // Log error for debugging
-        setError('Failed to fetch profile');
+        console.error(err); 
+        if (err.response?.status === 401) {
+          setError('Unauthorized access, please login again');
+          localStorage.removeItem('token');
+          navigate('/login');
+        } else {
+          setError('Failed to fetch profile');
+        }
       } finally {
         setLoading(false);
       }
     };
     fetchProfile();
-  }, []);
+  }, [navigate]);
 
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem('token'); // Retrieve token for the delete request
-      await axios.delete(`${import.meta.env.VITE_API_URL}delete-account`, {
+      const token = localStorage.getItem('token');
+      await axios.delete(`${import.meta.env.VITE_API_URL}/delete-account`, {
         headers: {
-          Authorization: `Bearer ${token}` // Include the token in headers
+          Authorization: `Bearer ${token}`
         }
       });
       alert('Account deleted successfully');
+      localStorage.removeItem('token');
       navigate('/signup');
     } catch (err) {
       console.error(err);
@@ -47,14 +58,15 @@ const DashboardPage = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading profile...</p>;
+
+  if (error) return <p className="text-red-500">{error}</p>;
 
   if (!user) return <p>User not found</p>;
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Profile</h2>
-      {error && <p className="text-red-500">{error}</p>}
       <div className="space-y-4">
         <p><strong>First Name:</strong> {user.firstname}</p>
         <p><strong>Last Name:</strong> {user.lastname}</p>

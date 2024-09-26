@@ -136,7 +136,7 @@ export const login = async (req, res) => {
 
     
     user.lastLogin = new Date();
-    await user.save();
+    // await user.save();
 
     // // Generate JWT and set it in cookie
     // generateTokenAndSetCookie(res, user._id);
@@ -148,8 +148,11 @@ export const login = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Logged in successfully',
-      user: { ...user._doc, password: undefined, token },
+      user,
+      token
+      
     });
+    console.log('user details',user, token)
   } catch (error) {
     console.error('Error in login: ', error);
     res.status(500).json({ success: false, message: 'Server error' });

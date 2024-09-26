@@ -2,17 +2,33 @@ import express from "express";
 import {login, signup, logout, verifyEmail, forgotPassword, resetPassword,  deleteUserAccount, updateUserProfile, getUserProfile, checkAuth } from "../controllers/user.controller.js"
 import { verifyToken } from "../middleware/verifyToken.js";
 import upload from "../upload.js";
-
+import jwt from "jsonwebtoken"
 const router = express.Router();
 
 const auth = (req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    jwt.verify(token, 'your_jwt_secret_key', (err, decoded) => {
-      if (err) return res.status(401).send('Unauthorized');
-      req.user = decoded;
-      next();
-    });
+    try {
+
+      const authHeader = req.header('Authorization');
+      if (!authHeader) {
+        return res.status(401).json({ message: 'Authorization header missing' });
+      }
+      const token = authHeader.replace('Bearer ', '');
+  
+      jwt.verify(token, process.env.JWT_SECRET || 'jwt_secret_key', (err, decoded) => {
+        if (err) {
+          return res.status(401).json({ message: 'Unauthorized: Invalid or expired token' });
+        }
+  
+        req.user = decoded;
+        next();
+      });
+    } catch (error) {
+      console.error('Authentication error: ', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   };
+
+
 
 router.get("/check-auth", verifyToken, checkAuth);
 router.post("/signup", upload, signup)

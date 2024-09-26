@@ -24,21 +24,20 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(''); 
+    setError('');
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, formData);
-      console.log(response)
-      if (response.ok) {
-        console.log('login successful', data.token)
-        localStorage.setItem('token', data.token)
-     
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, formData, { withCredentials: true });
+
+      if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
+        toast.success('Login successful!');
         navigate('/profile');
-      } else {
-        setError('Login failed. Please try again.');
       }
     } catch (err) {
-      console.log(err)
-      setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
+      console.log(err);
+      setError(err.response?.data?.message || 'An error occurred. Please try again.');
+      toast.error('Login failed!');
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +69,7 @@ const Login = () => {
             className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-blue-700 to-emerald-600 text-white 
             font-bold rounded-lg shadow-lg hover:from-blue-800
             hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-             focus:ring-offset-gray-900 transition duration-200'
+            focus:ring-offset-gray-900 transition duration-200'
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type='submit'
@@ -98,7 +97,7 @@ const Login = () => {
         </div>
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account? <a href="/signup" className="text-[#080C89] underline">Sign up</a>
+            Don't have an account? <Link to="/signup" className="text-[#080C89] underline">Sign up</Link>
           </p>
         </div>
         {/* Image Section (For Bottom Images) */}

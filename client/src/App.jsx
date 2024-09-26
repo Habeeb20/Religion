@@ -14,6 +14,7 @@ import Llogin from './pages/leader/Llogin';
 import LverifyEmail from './pages/leader/Lverify-email';
 import LforgotPassword from './pages/leader/LforgotPassword';
 import LProfile from './pages/leader/LProfile';
+import Homepage from './pages/Homepage';
 const App = () => {
   return (
 
@@ -21,6 +22,8 @@ const App = () => {
       <Navbar />
       <div className="min-h-screen bg-gray-100">
         <Routes>
+          <Route path='/' element={<Homepage />} />
+          //users
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify-email" element={<VerifyEmail />} />

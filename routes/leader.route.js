@@ -1,5 +1,5 @@
 import express from "express"
-import { login, signup,logout,verifyEmail,forgotPassword,resetPassword,deleteUserAccount,updateUserProfile,getUserProfile, checkAuth } from "../controllers/leader.controller.js"
+import { login, signup,logout,verifyEmail,forgotPassword,resetPassword,deleteUserAccount,updateUserProfile,getUserProfile, checkAuth, getAllLeaders, getleaderscounts } from "../controllers/leader.controller.js"
 import { verifyToken } from "../middleware/verifyToken.js"
 import upload from "../upload.js";
 
@@ -12,7 +12,9 @@ leaderrouter.post('/lverify-email', verifyEmail)
 leaderrouter.post('/lforgot-password', forgotPassword)
 leaderrouter.post('/lreset-password/:token', resetPassword)
 leaderrouter.put("/ledit", verifyToken, updateUserProfile)
-leaderrouter.delete("/deleteacounte", verifyToken, deleteUserAccount)
+leaderrouter.delete("/deleteacount", verifyToken, deleteUserAccount)
 leaderrouter.get("/getprofile", verifyToken, getUserProfile)
+leaderrouter.get("/getallleaders", getAllLeaders)
+leaderrouter.get("/getleaderscount", getleaderscounts)
 
 export default leaderrouter
