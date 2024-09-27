@@ -39,5 +39,5 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword)
 router.put("/edit", verifyToken, updateUserProfile)
 router.delete("/deleteaccount",verifyToken, deleteUserAccount)
-router.get("/getprofile", auth, getUserProfile)
+router.get("/getprofile", verifyToken, getUserProfile)
 export default router

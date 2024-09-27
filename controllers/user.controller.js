@@ -240,7 +240,7 @@ export const deleteUserAccount = async (req, res) => {
 // Get user profile
 export const getUserProfile = async (req, res) => {
   try {
-      const userId = req.user._id; 
+      const userId = req.user.id; 
       const user = await User.findById(userId).select('-password'); 
 
       if (!user) {

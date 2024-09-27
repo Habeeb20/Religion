@@ -21,14 +21,18 @@ const Llogin = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();``
     setIsLoading(true);
     try {
+    
       const response = await axios.post(`${import.meta.env.VITE_API_URL2}/llogin`, formData);
-      if (response.data) {
+      console.log(response)
+      if (response.data.token) {
+        const token = localStorage.setItem('token', response.data.token)
         navigate('/lprofile');
       }
     } catch (err) {
+      // console.log(err)
       setError(err.response.data.message);
     } finally{
       setIsLoading(false);
@@ -38,7 +42,7 @@ const Llogin = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 mt-6">
       <div className="w-full max-w-md bg-white p-8 rounded shadow">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Minister Login</h2>
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

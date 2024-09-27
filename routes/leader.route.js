@@ -1,5 +1,5 @@
 import express from "express"
-import { login, signup,logout,verifyEmail,forgotPassword,resetPassword,deleteUserAccount,updateUserProfile,getUserProfile, checkAuth, getAllLeaders, getleaderscounts } from "../controllers/leader.controller.js"
+import { login, signup,logout,verifyEmail,forgotPassword,resetPassword,deleteUserAccount,updateUserProfile,getUserProfile, checkAuth, getAllLeaders, getleaderscounts, getOtherUserProfile } from "../controllers/leader.controller.js"
 import { verifyToken } from "../middleware/verifyToken.js"
 import upload from "../upload.js";
 
@@ -16,5 +16,5 @@ leaderrouter.delete("/deleteacount", verifyToken, deleteUserAccount)
 leaderrouter.get("/getprofile", verifyToken, getUserProfile)
 leaderrouter.get("/getallleaders", getAllLeaders)
 leaderrouter.get("/getleaderscount", getleaderscounts)
-
+leaderrouter.get("/lleaderdetails/:id", getOtherUserProfile )
 export default leaderrouter

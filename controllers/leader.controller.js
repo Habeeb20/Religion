@@ -199,7 +199,7 @@ const transporter = nodemailer.createTransport({
     const {title, firstname, lastname,ministryname, email,password, bio,address, religion,category,country,state,localGovtArea,refereename, refereeemail, accountName, accountNumber, bankName, refereephone, relationship } = req.body;
 
     try {
-        const userId = req.user._id;
+        const userId = req.user.id;
         const user = await Leader.findById(userId)
 
         if(!user){
@@ -310,6 +310,52 @@ const transporter = nodemailer.createTransport({
       res.status(400).json({ error: error.message });
     }
   };
+
+
+
+  //get other users profile
+  export const getOtherUserProfile = async (req, res) => {
+    try {
+   
+      const { userId } = req.params;
+      const user = await Leader.findById(userId).select('-password');
+  
+      if (!user) {
+        console.log("user not found")
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json({
+        success: true,
+        user: {
+          _id: user._id,
+          title: user.title,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          ministryname: user.ministryname,
+          religion: user.religion,
+          email: user.email,
+          bio: user.bio,
+          address: user.address,
+          state: user.state,
+          country: user.country,
+          yearsInProfession: user.yearsInProfession,
+          localGovtArea: user.localGovtArea,
+          profilePicture: user.profilePicture,
+          lastLogin: user.lastLogin,
+          uniqueNumber: user.uniqueNumber,
+          accountName: user.accountName,
+          accountNumber: user.accountNumber,
+          bankName: user.bankName,
+          refereeemail: user.refereeemail,
+          refereename: user.refereename,
+          refereephone: user.refereephone
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Something went wrong' });
+    }
+  };
   
 
 
@@ -321,49 +367,58 @@ const transporter = nodemailer.createTransport({
 
   //Get user profile
 
-  export const getUserProfile = async(req, res) => {
+  export const getUserProfile = async (req, res) => {
     try {
-        const userId = req.user._id;
-        const user =  await Leader.findById(userId).select('-password')
+    
+      const userId = req.user?.id; 
+      console.log(req.user)
+    
 
-        if(!user){
-            return res.status(404).json({message: 'User not found '})
+      
+      if (!userId) {
+     
+        return res.status(400).json({ message: 'User ID not found' });
+      }
+  
+      const user = await Leader.findById(userId).select('-password');
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json({
+        success: true,
+        user: {
+          _id: user._id,
+          title: user._id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          ministryname: user.ministryname,
+          religion: user.religion,
+          email: user.email,
+          bio: user.bio,
+          address: user.address,
+          state: user.state,
+          country: user.country,
+          yearsInProfession: user.yearsInProfession,
+          localGovtArea: user.localGovtArea,
+          profilePicture: user.profilePicture,
+          lastLogin: user.lastLogin,
+          uniqueNumber: user.uniqueNumber,
+          accountName: user.accountName,
+          accountNumber: user.accountNumber,
+          bankName: user.bankName,
+          refereeemail: user.refereeemail,
+          refereename: user.refereename,
+          refereephone: user.refereephone
         }
-
-        res.status(200).json({
-            success: true,
-            user:{
-                _id:user._id,
-                title: user._id,
-                firstname:user.firstname,
-                lastname: user.lastname,
-                ministryname: user.ministryname,
-                religion: user.religion,
-                email: user.email,
-                bio: user.bio,
-                address: user.address,
-                state:user.state,
-                country: user.country,
-                yearsInProfession: user.yearsInProfession,
-                localGovtArea: user.localGovtArea,
-                profilePicture:user.profilePicture,
-                lastLogin: user.lastLogin,
-                uniqueNumber: user.uniqueNumber,
-                accountName: user.accountName,
-                accountNumber: user.accountNumber,
-                bankName:user.bankName,
-                refereeemail: user.refereeemail,
-                refereename: user.refereename,
-                refereephone: user.refereephone
-
-
-            }
-        })
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({message: 'something went wrong'})
+      console.error(error);
+      res.status(500).json({ message: 'Something went wrong' });
     }
-  }
+  };
+  
 
 
   

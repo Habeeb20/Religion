@@ -1,8 +1,8 @@
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
-import jwt from "jsonwebtoken"; // Make sure you import jwt
-import Chat from "./models/Chat"; // Adjust this import based on your project structure
+import jwt from "jsonwebtoken";
+import Chat from "./models/chat.model.js"; 
 
 const app = express();
 const server = http.createServer(app);
@@ -83,9 +83,9 @@ io.on("connection", (socket) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 5000;
+// server.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
 
 export { app, server, io };

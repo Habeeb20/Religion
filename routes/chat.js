@@ -18,7 +18,7 @@ chatrouter.post('/message', verifyToken, async(req, res) => {
 })
 
 
-chatrouter.post('/upload', verifyToken, upload.single('file'), (req, res) => {
+chatrouter.post('/upload', verifyToken, upload, (req, res) => {
     const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     res.json({ fileUrl });
 })

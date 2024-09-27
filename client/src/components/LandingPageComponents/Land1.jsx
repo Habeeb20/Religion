@@ -24,6 +24,22 @@ const Land1 = () => {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
+  const handleClick = async (userId) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL2}/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+         
+        },
+      });
+      const data = await response.json();
+      console.log(data); 
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+
   // Handle search and filter ministers based on religion, state, and local government area
   const handleSearch = () => {
     const filteredByLga = ministers.filter(
@@ -208,13 +224,16 @@ const Land1 = () => {
                     <p>{leader.email}</p>
                     <p>{leader.phone}</p>
                   </div>
-
+                
                   {/* View Profile Button */}
                   <Link
-                    to={`/ministerprofile/${leader._id}`}
+                    to={`/leader/${leader._id}`}
                     className="block mt-4 text-center text-indigo-900 bg-white border border-indigo-900 hover:bg-indigo-900 hover:text-white py-2 px-4 rounded-md"
-                  >
-                    View Profile
+                  > <button onClick={() => handleClick()}>
+                      View Profile
+
+                  </button>
+                  
                   </Link>
                 </div>
               ))}
