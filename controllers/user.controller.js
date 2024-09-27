@@ -38,10 +38,10 @@ const sendOTPEmail = async (email, otp) => {
 
 // Signup controller
 export const signup = async (req, res) => {
-  const { firstname, lastname, email, password, state, localGovtArea } = req.body;
+  const { firstname, lastname, email, password, state, localGovtArea, phone, bio, address, accountName, accountNumber, bankName, religion, category } = req.body;
 
   try {
-    if (!email || !password || !firstname || !lastname || !state || !localGovtArea || !req.file) {
+    if (!email || !password || !firstname || !lastname || !state || !localGovtArea || !phone ||!address ||!bio || !accountName || !accountNumber || !bankName || !religion || !category || !req.file) {
       console.log('error')
       return res.status(400).json({ message: 'All fields are required, including profile picture' });
     }
@@ -67,6 +67,14 @@ export const signup = async (req, res) => {
       firstname,
       lastname,
       email,
+      phone,
+      bio,
+      address,
+      accountName,
+      accountNumber,
+      bankName,
+      category,
+      religion,
       password: hashedPassword,
       state,
       localGovtArea,
@@ -177,20 +185,27 @@ export const updateUserProfile = async (req, res) => {
   const { firstname, lastname, email, state, localGovtArea, profilePicture } = req.body;
 
   try {
-      // Find user by ID (from token, for example)
-      const userId = req.user._id; // Assuming you have middleware to set req.user
+    
+      const userId = req.user.id; 
       const user = await User.findById(userId);
 
       if (!user) {
           return res.status(404).json({ message: 'User not found' });
       }
 
-      // Update fields
+     
       user.firstname = firstname || user.firstname;
       user.lastname = lastname || user.lastname;
       user.email = email || user.email;
       user.state = state || user.state;
       user.localGovtArea = localGovtArea || user.localGovtArea;
+      user.phone = phone || user.phone;
+      user.bio = bio || user.bio;
+      user.address = address || user.address;
+      user.accountName = accountName || user.accountName;
+      user.bankName = bankName || user.bankName;
+      user.religion = religion || user.religion;
+      user.category = category || user.category;
       if (profilePicture) {
 
           user.profilePicture = profilePicture;
@@ -258,7 +273,15 @@ export const getUserProfile = async (req, res) => {
               localGovtArea: user.localGovtArea,
               profilePicture: user.profilePicture,
               lastLogin: user.lastLogin, 
-              uniqueNumber: user.uniqueNumber
+              uniqueNumber: user.uniqueNumber,
+              phone: user.phone,
+              bio: user.bio,
+              address: user.address,
+              accountName: user.accountName,
+              accountNumber: user.accountNumber,
+              bankName: user.bankName,
+              category:user.category,
+              religion: user.religion,
           },
       });
   } catch (error) {

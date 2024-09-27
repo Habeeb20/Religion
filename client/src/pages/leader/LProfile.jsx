@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const LProfile = () => {
   const [userData, setUserData] = useState(null);
-  const [activeTab, setActiveTab] = useState('general'); // Tracks active section
-  const [isEditing, setIsEditing] = useState(false); // Tracks edit mode
-  const [editedData, setEditedData] = useState({}); // Stores the edited data
+  const [activeTab, setActiveTab] = useState('general'); 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedData, setEditedData] = useState({}); 
 
   useEffect(() => {
     console.log('token', localStorage.getItem('token'));
@@ -151,7 +151,7 @@ const LProfile = () => {
                   <p className="text-gray-600"><strong>Address:</strong> {userData.address}</p>
                   <p className="text-gray-600"><strong>unique Num:</strong> {userData.uniqueNumber}</p>
                   <p className="text-gray-600"><strong>Religion:</strong> {userData.religion}</p>
-                  <p className="text-gray-600"><strong>Category:</strong> {userData.Category}</p>
+                  <p className="text-gray-600"><strong>Category:</strong> {userData.category}</p>
                 </div>
               </div>
               {/* Edit and Save Buttons */}

@@ -199,7 +199,7 @@ const transporter = nodemailer.createTransport({
     const {title, firstname, lastname,ministryname, email,password, bio,address, religion,category,country,state,localGovtArea,refereename, refereeemail, accountName, accountNumber, bankName, refereephone, relationship } = req.body;
 
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const user = await Leader.findById(userId)
 
         if(!user){
@@ -251,7 +251,7 @@ const transporter = nodemailer.createTransport({
 
   export const deleteUserAccount = async(req, res) => {
     try {
-        const userId = req.user._id; 
+        const userId = req.user?.id; 
         const user = await Leader.findById(userId);
 
         if(!user){
