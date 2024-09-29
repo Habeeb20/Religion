@@ -60,7 +60,7 @@ const Religion2 = () => {
               alt={minister}
               className="w-full h-40 object-cover rounded-md mb-4 font-base"
             />
-            <h4 className="font-bold text-gray-800 text-center">{minister.title} {minister.firstname}</h4>
+            <h4 className="font-bold text-gray-800 text-center">{minister.title} {minister.firstname} {minister.lastname}</h4>
             <p className="text-sm text-center text-gray-600">{minister.ministryname}</p>
           </div>
         ))}

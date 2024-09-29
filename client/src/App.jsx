@@ -19,6 +19,7 @@ import Chat from './components/chat/Chat';
 import LresetPassword from './pages/leader/LresetPassword';
 import LleaderDetails from './pages/leader/LleaderDetails';
 import Religion from './pages/Religion';
+import Choice from './components/choice/choice1';
 const App = () => {
   return (
 
@@ -28,6 +29,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Homepage />} />
           <Route path='/religion' element={<Religion />} />
+          <Route path='/choice' element={<Choice />} />
           //users
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

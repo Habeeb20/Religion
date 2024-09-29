@@ -62,7 +62,7 @@ const Religion4 = () => {
         </p>
       </div>
         
-        <h3 className="text-lg font-semibold mb-4">Icons in Christianity</h3>
+        <h3 className="text-lg font-semibold mb-4">Icons in Islam</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {ministers.map((minister, index) => (
             <div
@@ -74,7 +74,7 @@ const Religion4 = () => {
                 alt={minister}
                 className="w-full h-40 object-cover rounded-md mb-4 font-base"
               />
-              <h4 className="font-bold text-gray-800 text-center">{minister.title} {minister.firstname}</h4>
+              <h4 className="font-bold text-gray-800 text-center">{minister.title} {minister.firstname} {minister.lastname}</h4>
               <p className="text-sm text-center text-gray-600">{minister.ministryname}</p>
             </div>
           ))}
@@ -83,7 +83,7 @@ const Religion4 = () => {
           onClick={() => window.location.href = '/login'}
           className="bg-indigo-600 text-white py-2 px-6 rounded-md mt-4 block mx-auto hover:bg-indigo-500"
         >
-          Contact a Christian Minister
+          Contact an Islamic Minister
         </button>
       </div>
 
