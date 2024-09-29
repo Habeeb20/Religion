@@ -20,6 +20,8 @@ import LresetPassword from './pages/leader/LresetPassword';
 import LleaderDetails from './pages/leader/LleaderDetails';
 import Religion from './pages/Religion';
 import Choice from './components/choice/choice1';
+import Payment from './pages/payment/Payment';
+import PaymentSuccess from './pages/payment/PaymentSuccess';
 const App = () => {
   return (
 
@@ -30,6 +32,7 @@ const App = () => {
           <Route path='/' element={<Homepage />} />
           <Route path='/religion' element={<Religion />} />
           <Route path='/choice' element={<Choice />} />
+
           //users
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
@@ -37,13 +40,13 @@ const App = () => {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password/:token' element={<ResetPassword />} />
 
-       
+
           <Route
             path="/profile"
             element={
-              
-                <Profile />
-             
+
+              <Profile />
+
             }
           />
 
@@ -60,14 +63,20 @@ const App = () => {
           <Route
             path="/lprofile"
             element={
-           
-                <LProfile />
-            
+
+              <LProfile />
+
             }
           />
 
           //chat
           <Route path='/chat' element={<Chat />} />
+
+
+          //payment
+          <Route path='payment' element={<Payment />} />
+
+          <Route path="/paymentverification" element={<PaymentSuccess />} />
 
         </Routes>
       </div>

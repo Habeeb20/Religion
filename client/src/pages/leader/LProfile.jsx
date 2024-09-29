@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 const LProfile = () => {
   const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState('general'); 
@@ -82,8 +82,8 @@ const LProfile = () => {
 
           {/* Navigation for Profile Sections */}
           <div className="mt-8 w-full flex flex-col space-y-2">
-            <button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Go to Church profile</button>
-            <button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Go to your chat</button>
+            <Link to='/payment'> <button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Make payment to activate your account</button></Link>
+            <Link to='/chat'><button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Go to your chat</button></Link>
           </div>
         </div>
 
