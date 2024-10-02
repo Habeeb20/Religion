@@ -507,5 +507,30 @@ export const checkAuth = async (req, res) => {
 };
 
 
+export const updateLeaderStatus = async (req, res) => {
+  try {
+    const { leaderId, actionType } = req.body;
+
+    const leader = await Leader.findById(leaderId);
+    if (!leader) return res.status(404).json({ msg: 'Leader not found' });
+
+   
+    if (actionType === 'block') {
+      leader.status = 'blocked';
+    } else if (actionType === 'activate') {
+      leader.status = 'active';
+    } else if (actionType === 'verify') {
+      leader.isVerified = true;
+    }
+
+ 
+    await leader.save();
+    res.status(200).json({ msg: 'Leader status updated successfully', leader });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+};
+
+
 
   

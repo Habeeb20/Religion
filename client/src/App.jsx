@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Signup from './pages/user/SignUpPage';
 import Login from './pages/user/LoginPage';
 import VerifyEmail from './pages/user/VerifyEmail';
 import Profile from './pages/user/DashboardPage';
 import ForgotPassword from './pages/user/ForgotPassword';
 import ResetPassword from './pages/user/ResetPassword';
-
+import { io } from 'socket.io-client'
 import { ProtectedRoute } from './pages/user/ProtectRoute';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
@@ -15,14 +15,45 @@ import LverifyEmail from './pages/leader/Lverify-email';
 import LforgotPassword from './pages/leader/LforgotPassword';
 import LProfile from './pages/leader/LProfile';
 import Homepage from './pages/Homepage';
-import Chat from './components/chat/Chat';
+
 import LresetPassword from './pages/leader/LresetPassword';
 import LleaderDetails from './pages/leader/LleaderDetails';
 import Religion from './pages/Religion';
 import Choice from './components/choice/choice1';
 import Payment from './pages/payment/Payment';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminRegister from './pages/admin/AdminRegister';
+import ChatHome from './pages/Chat/ChatHome';
+import ChatLogin from './pages/Chat/Login'
+import ChatSignup from './pages/Chat/SignUp'
+import { useAuthContext } from './context/AuthContext';
+import { useEffect } from 'react';
+const socket = io(import.meta.env.VITE_BACKEND_URL)
 const App = () => {
+
+  const { authUser } = useAuthContext()
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to socket.io server');
+    });
+
+    socket.on('notification', (data) => {
+      alert(data.message); // Show notification (simple alert for now)
+    });
+
+    socket.on('meeting_notification', (meetingDetails) => {
+      alert('you have a new meeting scheduled: ${meetingDetails}')
+    })
+
+    return () => {
+      socket.off('connect');
+      socket.off('notification');
+    };
+  }, []);
+
+  
   return (
 
     <Router>
@@ -69,14 +100,38 @@ const App = () => {
             }
           />
 
-          //chat
-          <Route path='/chat' element={<Chat />} />
+
+          //admin 
+          <Route path='/adminlogin' element={<AdminLogin />} />
+          <Route path='/adminregister' element={<AdminRegister />} />
+          <Route path = '/admin' element={<AdminDashboard />} />
+
+          {/* //chat
+          <Route path='/chat' element={<Chat />} /> */}
 
 
           //payment
           <Route path='payment' element={<Payment />} />
 
           <Route path="/paymentverification" element={<PaymentSuccess />} />
+
+
+          //chat
+        <Route
+          path="/chat"
+          element={authUser ? <ChatHome /> : <Navigate to={"/chatlogin"} />}
+        />
+
+
+        <Route
+          path="/chatlogin"
+          element={authUser ? <Navigate to={"/chat"} /> : <ChatLogin />}
+        />
+
+        <Route
+          path="/chatsignup"
+          element={authUser ? <Navigate to={"/chat"} /> : <ChatSignup />}
+        />
 
         </Routes>
       </div>

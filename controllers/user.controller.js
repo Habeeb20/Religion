@@ -379,3 +379,39 @@ export const checkAuth = async (req, res) => {
 };
 
 
+export const updateUserStatus = async (req, res) => {
+  try {
+    const { userId, actionType } = req.body; 
+
+    
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+  
+    if (actionType === 'block') {
+      user.status = 'blocked';
+    } else if (actionType === 'activate') {
+      user.status = 'active';
+    } else if (actionType === 'verify') {
+      user.isVerified = true;
+    }
+
+  
+    await user.save();
+    res.status(200).json({ msg: 'User status updated successfully', user });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+};
+
+//getall users
+
+export const getAllusers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+

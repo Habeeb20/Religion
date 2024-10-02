@@ -13,8 +13,13 @@ import morgan from "morgan";
 import cloudinary from "cloudinary"
 import multer from "multer";
 import leaderrouter from "./routes/leader.route.js";
-import chatrouter from "./routes/chat.js";
+
 import paymentRoute from "./routes/paymentRoute.js";
+import adminrouter from "./routes/admin.route.js";
+import authRoute from "./routes/chat/authRoute.js"
+import messageRoute from "./routes/chat/messageRoute.js"
+import userChatRoute from ".//routes/chat/userChatRoute.js"
+
 dotenv.config();
 
 const __dirname = path.resolve();
@@ -37,8 +42,16 @@ app.use('/uploads',express.static(path.join(__dirname, '/client/dist')));
 app.use(morgan('dev'))
 app.use('/api/users', router)
 app.use('/api/leaders', leaderrouter)
-app.use('/api/chat', chatrouter)
+
 app.use("/api", paymentRoute)
+app.use("/api/admin", adminrouter)
+
+
+//chat
+
+app.use('/chat/auth', authRoute)
+app.use('/chat/messages', messageRoute)
+app.use('/chat/users', userChatRoute)
 
 
 

@@ -68,51 +68,7 @@ const Religion3 = () => {
         </div>
 
         {/* Icons Section */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-3xl font-bold text-indigo-800 mb-4">Icons in this religion</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Icon 1 */}
-            <div className="bg-gray-100 rounded-lg p-4">
-              <img
-                src="https://via.placeholder.com/100"
-                alt="Icon 1"
-                className="w-full h-32 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-bold text-gray-800">Pst. James Johnson</h3>
-              <p className="text-sm text-gray-600">Body of Christ Church</p>
-            </div>
-            {/* Icon 2 */}
-            <div className="bg-gray-100 rounded-lg p-4">
-              <img
-                src="https://via.placeholder.com/100"
-                alt="Icon 2"
-                className="w-full h-32 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-bold text-gray-800">Pst. James Johnson</h3>
-              <p className="text-sm text-gray-600">Body of Christ Church</p>
-            </div>
-            {/* Icon 3 */}
-            <div className="bg-gray-100 rounded-lg p-4">
-              <img
-                src="https://via.placeholder.com/100"
-                alt="Icon 3"
-                className="w-full h-32 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-bold text-gray-800">Pst. James Johnson</h3>
-              <p className="text-sm text-gray-600">Body of Christ Church</p>
-            </div>
-            {/* Icon 4 */}
-            <div className="bg-gray-100 rounded-lg p-4">
-              <img
-                src="https://via.placeholder.com/100"
-                alt="Icon 4"
-                className="w-full h-32 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-bold text-gray-800">Pst. James Johnson</h3>
-              <p className="text-sm text-gray-600">Body of Christ Church</p>
-            </div>
-          </div>
-        </div>
+    
       </div>
     </div>
   );
