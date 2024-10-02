@@ -1,8 +1,9 @@
 import React from 'react';
-
+import im from "../../assets/religion/blacklist.png"
+import im2 from "../../assets/religion/blacklist2.png"
 const Report1 = () => {
   return (
-    <div className="flex flex-col items-center bg-yellow-50 py-10 min-h-screen">
+    <div className="flex flex-col items-center bg-yellow-50 py-10 min-h-screen mt-5">
       {/* Header Section */}
       <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4 text-center">
         Help us keep you safe
@@ -14,13 +15,13 @@ const Report1 = () => {
       {/* Image Section */}
       <div className="w-full max-w-2xl mb-8 relative">
         <img
-          src="https://via.placeholder.com/600x300.png"
+          src={im2}
           alt="People in blacklist"
           className="w-full h-auto object-cover"
         />
-        <div className="absolute inset-0 flex justify-center items-center">
+        <div className="absolute inset-0 flex justify-center items-center w-full">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Blacklisted_stamp.svg/1280px-Blacklisted_stamp.svg.png"
+            src={im}
             alt="Blacklist"
             className="w-1/2 md:w-1/3 opacity-90"
           />

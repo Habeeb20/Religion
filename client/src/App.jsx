@@ -30,6 +30,11 @@ import ChatLogin from './pages/Chat/Login'
 import ChatSignup from './pages/Chat/SignUp'
 import { useAuthContext } from './context/AuthContext';
 import { useEffect } from 'react';
+import Report from './pages/Report';
+import BlackList from './pages/BlackList';
+import InfoModal from './pages/leader/InfoModal';
+import ChooseLogin from './pages/ChooseLogin';
+import Policy from './pages/Policy';
 const socket = io(import.meta.env.VITE_BACKEND_URL)
 const App = () => {
 
@@ -63,6 +68,13 @@ const App = () => {
           <Route path='/' element={<Homepage />} />
           <Route path='/religion' element={<Religion />} />
           <Route path='/choice' element={<Choice />} />
+          <Route path='/report' element={<Report />} />
+          <Route path='/blacklist' element={<BlackList />} />
+          <Route path='/info' element={<InfoModal />} />
+          <Route path='/chooselogin' element={<ChooseLogin />} />
+          <Route path='/policy' element={<Policy />} />
+          
+
 
           //users
           <Route path="/signup" element={<Signup />} />

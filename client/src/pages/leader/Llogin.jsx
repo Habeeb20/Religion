@@ -93,7 +93,7 @@ const Llogin = () => {
 </div>
 <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Dont have an account? <a href="/lsignup" className="text-[#080C89] underline">Sign in</a>
+            Dont have an account? <a href="/info" className="text-[#080C89] underline">register</a>
           </p>
         </div>
            {/* Image Section (For Bottom Images) */}

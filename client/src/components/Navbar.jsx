@@ -13,7 +13,7 @@ const Navbar = () => {
     { name: 'About us', link: '/about' },
     { name: 'Religion', link: '/religion' },
     { name: 'Report', link: '/report' },
-    { name: 'Profile', link: '/login' },
+    { name: 'Profile', link: '/chooselogin' },
     { name: 'Blacklist', link: '/blacklist' },
   ];
 
