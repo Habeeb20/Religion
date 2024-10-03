@@ -1,5 +1,3 @@
-// middleware/adminAuth.js
-
 import jwt from 'jsonwebtoken';
 import User from '../models/admin.model.js'; 
 
@@ -15,7 +13,6 @@ export const adminAuth = async (req, res, next) => {
 
     
 
-    // Check if the user is an admin
     const user = await User.findById(decoded.id);
     if (!user || user.role !== 'admin') {
       return res.status(403).json({ msg: 'Access denied, admin only' });

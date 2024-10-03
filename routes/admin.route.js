@@ -20,6 +20,7 @@ adminrouter.get('/users', adminAuth, async (req, res) => {
     const users = await User.find({});
     res.json(users);
   } catch (err) {
+    console.log(err)
     res.status(500).json({ msg: 'Server error' });
   }
 });
@@ -30,6 +31,7 @@ adminrouter.get('/leaders', adminAuth, async (req, res) => {
     const leaders = await Leader.find({});
     res.json(leaders);
   } catch (err) {
+    console.log(err)
     res.status(500).json({ msg: 'Server error' });
   }
 });
