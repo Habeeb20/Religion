@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { AiFillInfoCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+
 const ChooseLogin = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
 
   const userModal = () => {
-    navigate('/login')
+    navigate('/login');
     setIsOpen(false);
   };
   const leaderModal = () => {
-    navigate('/llogin')
+    navigate('/llogin');
     setIsOpen(false);
   };
 
@@ -33,7 +34,7 @@ const ChooseLogin = () => {
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-indigo-900 mb-4">
-            EReligion
+          EReligion
         </h2>
 
         {/* Description */}
@@ -41,25 +42,21 @@ const ChooseLogin = () => {
           Do you want to login as a user or minister of God
         </p>
 
-        {/* Policy button */}
-        <div>
-        <button
-          className="px-6 py-2 bg-indigo-800 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all "
-          onClick={userModal}
-        >
-          User
-        </button>
-    
-  
-        <button
-          className="px-6 py-2 bg-indigo-800 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all"
-          onClick={leaderModal}
-        >
-          Minister
-        </button>
-
+        {/* Buttons with space */}
+        <div className="flex justify-center space-x-4">
+          <button
+            className="px-6 py-2 bg-indigo-800 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all"
+            onClick={userModal}
+          >
+            User
+          </button>
+          <button
+            className="px-6 py-2 bg-indigo-800 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all"
+            onClick={leaderModal}
+          >
+            Minister
+          </button>
         </div>
-    
       </div>
     </div>
   );

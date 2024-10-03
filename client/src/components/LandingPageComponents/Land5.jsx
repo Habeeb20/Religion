@@ -10,7 +10,7 @@ const cities = [
   {
     name: 'Lagos Religious leaders',
     count: '8,496',
-    image: im, // Use the image file path directly
+    image: im, 
   },
   {
     name: 'Abuja  Religious leaders',
@@ -43,7 +43,7 @@ const CityCard = ({ city }) => {
   return (
     <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
       <img
-        src={city.image} // Ensure the image is correctly referenced
+        src={city.image} 
         alt={city.name}
         className="w-full h-full object-cover"
       />
