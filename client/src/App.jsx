@@ -38,6 +38,8 @@ import Policy from './pages/Policy';
 import AllUsers from './pages/admin/AllUsers';
 import AllLeaders from './pages/admin/AllLeaders';
 import Dashboard from './pages/admin/Dashboard';
+import AboutUs from './pages/AboutUs';
+import Admin from './pages/admin/AdminDashboard';
 const socket = io(import.meta.env.VITE_BACKEND_URL)
 const App = () => {
 
@@ -76,11 +78,12 @@ const App = () => {
           <Route path='/info' element={<InfoModal />} />
           <Route path='/chooselogin' element={<ChooseLogin />} />
           <Route path='/policy' element={<Policy />} />
+          <Route path='/about' element={<AboutUs />} />
 
 
           <Route path='/admin/users' element={<AllUsers />} />
           <Route path='/admin/leaders' element={<AllLeaders />} />
-          <Route path='/admin/dashboard' element={<Dashboard />} />
+          <Route path='/admin' element={<Admin />} />
 
 
 
