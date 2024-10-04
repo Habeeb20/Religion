@@ -2,12 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineHome, AiOutlineUser, AiOutlineTeam, AiOutlineCheckCircle, AiOutlineExclamationCircle } from 'react-icons/ai';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AllLeaders = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch users from API
+  const handleVerify = async (userId) => {
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_API_URL2}/leaderisverified/${userId}`);
+      if (response.status === 200) {
+        // Update the user's verified status locally
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user._id === userId ? { ...user, isVerified: true } : user
+          )
+        );
+        toast.success('User verified successfully!');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to verify user. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -22,7 +40,6 @@ const AllLeaders = () => {
     fetchUsers();
   }, []);
 
-  // Function to format date to a human-readable form
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -30,6 +47,12 @@ const AllLeaders = () => {
       month: 'short',
       year: 'numeric',
     });
+  };
+
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!isSidebarVisible);
   };
 
   return (
@@ -90,7 +113,7 @@ const AllLeaders = () => {
               </thead>
               <tbody>
                 {users.map((user, index) => (
-                  <tr key={user.id} className="border-b">
+                  <tr key={user._id} className="border-b">
                     <td className="py-2 px-4">{index + 1}</td>
                     <td className="py-2 px-4">{user.firstname}</td>
                     <td className="py-2 px-4">{user.lastname}</td>
@@ -102,7 +125,16 @@ const AllLeaders = () => {
                     <td className="py-2 px-4">{user.state}</td>
                     <td className="py-2 px-4">{user.localGovtArea}</td>
                     <td className="py-2 px-4 flex space-x-2">
-                      <button className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Verify</button>
+                      {!user.isVerified ? (
+                        <button
+                          onClick={() => handleVerify(user._id)}
+                          className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                        >
+                          Verify
+                        </button>
+                      ) : (
+                        <span className="bg-gray-500 text-white px-4 py-1 rounded">Verified</span>
+                      )}
                       <button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Block</button>
                     </td>
                   </tr>
@@ -113,9 +145,27 @@ const AllLeaders = () => {
         )}
       </div>
 
-      {/* Mobile Sidebar Toggle */}
-      <div className="md:hidden fixed bottom-4 left-4 bg-indigo-900 text-white p-2 rounded-full shadow-lg">
-        <button className="text-xl">☰</button>
+      <div>
+        {/* Mobile Sidebar Toggle Button */}
+        <div className="md:hidden fixed bottom-4 left-4 bg-indigo-900 text-white p-2 rounded-full shadow-lg">
+          <button onClick={toggleSidebar} className="text-xl">☰</button>
+        </div>
+
+        {/* Sidebar (conditionally rendered) */}
+        {isSidebarVisible && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+            <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 p-4">
+              <h2 className="text-2xl font-bold mb-4">Sidebar Menu</h2>
+              <ul>
+                <li className="mb-2"><a href="/admin" className="block p-2">Dashboard</a></li>
+                <li className="mb-2"><a href="/admin/users" className="block p-2">All users</a></li>
+                <li className="mb-2"><a href="/admin/leaders" className="block p-2">All leaders</a></li>
+                <li className="mb-2"><a href="/verify-users" className="block p-2">Verify users</a></li>
+              </ul>
+              <button onClick={toggleSidebar} className="mt-4 text-red-500">Close</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

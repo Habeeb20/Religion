@@ -22,6 +22,14 @@ const AllUsers = () => {
     fetchUsers();
   }, []);
 
+  
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
+  
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!isSidebarVisible);
+  };
+
   // Function to format date to a human-readable form
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -111,10 +119,30 @@ const AllUsers = () => {
         )}
       </div>
 
-      {/* Mobile Sidebar Toggle */}
+
+      <div>
+      {/* Mobile Sidebar Toggle Button */}
       <div className="md:hidden fixed bottom-4 left-4 bg-indigo-900 text-white p-2 rounded-full shadow-lg">
-        <button className="text-xl">☰</button>
+        <button onClick={toggleSidebar} className="text-xl">☰</button>
       </div>
+
+      {/* Sidebar (conditionally rendered) */}
+      {isSidebarVisible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+          <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 p-4">
+            {/* Sidebar content here */}
+            <h2 className="text-2xl font-bold mb-4">Sidebar Menu</h2>
+            <ul>
+              <li className="mb-2"><a href="/admin" className="block p-2">Dashboard</a></li>
+              <li className="mb-2"><a href="/admin/users" className="block p-2">All users</a></li>
+              <li className="mb-2"><a href="/admin/leaders" className="block p-2">All leaders</a></li>
+              <li className="mb-2"><a href="/verify-users" className="block p-2">Verify users</a></li>
+            </ul>
+            <button onClick={toggleSidebar} className="mt-4 p-2 bg-red-500 text-white rounded">Close</button>
+          </div>
+        </div>
+      )}
+    </div>
     </div>
   );
 };

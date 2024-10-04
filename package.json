@@ -33,6 +33,7 @@
     "nodemailer": "^6.9.15",
     "nodemon": "^3.1.7",
     "peer": "^1.0.2",
+    "react-toastify": "^10.0.5",
     "socket.io": "^4.8.0",
     "socketio": "^1.0.0"
   }

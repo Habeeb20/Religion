@@ -48,8 +48,8 @@ const CityCard = ({ city }) => {
         className="w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white">
-        <h2 className="text-2xl font-semibold">{city.count}</h2>
-        <p className="text-lg">{city.name}</p>
+        <h2 className="text-2xl font-semibold text-white">{city.count}</h2>
+        <p className="text-lg text-white">{city.name}</p>
       </div>
     </div>
   );

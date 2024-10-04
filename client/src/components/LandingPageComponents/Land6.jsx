@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Importing axios
 import im from '../../assets/religion/Container (1).png'; // Default image if required
 import { FaEnvelope } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Land6 = () => {
   const [ministers, setMinisters] = useState([]);
@@ -56,6 +57,7 @@ const Land6 = () => {
             {email}
           </a>
         </span>
+        <Link to='/userlogin'><button>View More</button></Link>
       </div>
     );
   };

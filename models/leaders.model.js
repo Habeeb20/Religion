@@ -43,6 +43,14 @@ const leaderSchema = new mongoose.Schema({
   verificationTokenExpiresAt: Date,
 
 });
+leaderSchema.pre('save', function(next) {
+  if (this.isVerified) {
+    this.status = 'active';
+  } else {
+    this.status = 'pending';
+  }
+  next();
+});
 
 const Leader = mongoose.model('Leader', leaderSchema);
 export default Leader;

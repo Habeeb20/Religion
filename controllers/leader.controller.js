@@ -531,6 +531,25 @@ export const updateLeaderStatus = async (req, res) => {
   }
 };
 
+export const isVerifiedLeader = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await Leader.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.status(200).json({ message: 'User verified successfully!' });
+    
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+    
+  }
+}
+
 
 
   

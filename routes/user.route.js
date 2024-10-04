@@ -1,5 +1,5 @@
 import express from "express";
-import {login, signup, logout, verifyEmail, forgotPassword, resetPassword,  deleteUserAccount, updateUserProfile, getUserProfile, checkAuth, getAllusers } from "../controllers/user.controller.js"
+import {login, signup, logout, verifyEmail, forgotPassword, resetPassword,  deleteUserAccount, updateUserProfile, getUserProfile, checkAuth, getAllusers, isVerifiedUser } from "../controllers/user.controller.js"
 import { verifyToken } from "../middleware/verifyToken.js";
 import upload from "../upload.js";
 import jwt from "jsonwebtoken"
@@ -41,4 +41,7 @@ router.put("/edit", verifyToken, updateUserProfile)
 router.delete("/deleteaccount",verifyToken, deleteUserAccount)
 router.get("/getprofile", verifyToken, getUserProfile)
 router.get('/getallusers', getAllusers)
+router.get('/userisverified/:id', isVerifiedUser)
 export default router
+
+

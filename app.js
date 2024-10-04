@@ -19,6 +19,7 @@ import adminrouter from "./routes/admin.route.js";
 import authRoute from "./routes/chat/authRoute.js"
 import messageRoute from "./routes/chat/messageRoute.js"
 import userChatRoute from ".//routes/chat/userChatRoute.js"
+import reportrouter from "./routes/report.route.js";
 
 dotenv.config();
 
@@ -47,11 +48,15 @@ app.use("/api", paymentRoute)
 app.use("/api/admin", adminrouter)
 
 
+
 //chat
 
 app.use('/chat/auth', authRoute)
 app.use('/chat/messages', messageRoute)
 app.use('/chat/users', userChatRoute)
+
+//report
+app.use('/report', reportrouter)
 
 
 

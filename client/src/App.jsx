@@ -40,6 +40,7 @@ import AllLeaders from './pages/admin/AllLeaders';
 import Dashboard from './pages/admin/Dashboard';
 import AboutUs from './pages/AboutUs';
 import Admin from './pages/admin/AdminDashboard';
+import UserLogin from './pages/UserLogin';
 const socket = io(import.meta.env.VITE_BACKEND_URL)
 const App = () => {
 
@@ -79,6 +80,7 @@ const App = () => {
           <Route path='/chooselogin' element={<ChooseLogin />} />
           <Route path='/policy' element={<Policy />} />
           <Route path='/about' element={<AboutUs />} />
+          <Route path='/userlogin' element={<UserLogin />} />
 
 
           <Route path='/admin/users' element={<AllUsers />} />
