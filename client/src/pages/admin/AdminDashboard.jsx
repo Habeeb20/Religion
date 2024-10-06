@@ -226,7 +226,7 @@ const Admin = () => {
             <span>Verify Leaders</span>
           </NavLink>
           <NavLink
-            to="/reported"
+            to="/reportedaccounts"
             className={({ isActive }) =>
               `flex items-center space-x-2 text-gray-300 hover:text-white px-4 py-2 rounded-lg ${
                 isActive ? 'bg-indigo-700 font-bold text-white' : ''

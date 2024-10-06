@@ -20,33 +20,42 @@ const ReportForm = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
             [name]: value
-        });
+        }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         setIsLoading(true);
 
         try {
             const form = new FormData();
-            Object.keys(formData).forEach((key) => {
+            for (const key in formData) {
                 form.append(key, formData[key]);
+            }
+
+            form.forEach((value, key)=>{
+                console.log(`${key}: ${value}`)
+            })
+
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/report/postreports`, form,{
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             });
+          
 
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/report/postreports`, form);
-
-            if (response.data) {
-                navigate('/report');
+            if (data) {
+                navigate('/');
                 toast.success("Successfully reported");
             }
-        } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
-            toast.error(err.response?.data?.message || "An error occurred. Please try again.");
+        } catch (error) {
+            const message = error.response?.data?.message || "An error occurred. Please try again.";
+            setError(message);
+            toast.error(message);
         } finally {
             setIsLoading(false);
         }
@@ -61,57 +70,97 @@ const ReportForm = () => {
                 <p className="text-center text-gray-700 mb-10">
                     Report any indecent activity directly to the admin and we would perform necessary investigation
                 </p>
-                {error && <p className='text-red-500 text-center'>{error}</p>}
+                {error && <p className="text-red-500 text-center">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="w-full bg-white shadow-lg p-8 rounded-lg space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-gray-700">Name Of Reporter</label>
-                            <input type="text" name='nameOfReporter' className="w-full p-2 border border-gray-300 rounded" value={formData.nameOfReporter} onChange={handleChange} />
+                            <input 
+                                type="text" 
+                                name="nameOfReporter" 
+                                className="w-full p-2 border border-gray-300 rounded"  
+                                onChange={handleChange} 
+                            />
                         </div>
 
                         <div>
                             <label className="block text-gray-700">Email of Reporter</label>
-                            <input type="email" name='emailOfReporter' value={formData.emailOfReporter} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+                            <input 
+                                type="email" 
+                                name="emailOfReporter" 
+                                value={formData.emailOfReporter} 
+                                onChange={handleChange} 
+                                className="w-full p-2 border border-gray-300 rounded" 
+                            />
                         </div>
 
                         <div>
                             <label className="block text-gray-700">Phone Number of Reporter</label>
-                            <input type="number" name='phonenum' value={formData.phonenum} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+                            <input 
+                                type="number" 
+                                name="phonenum" 
+                                value={formData.phonenum} 
+                                onChange={handleChange} 
+                                className="w-full p-2 border border-gray-300 rounded" 
+                            />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-gray-700">Name of Minister to be Reported</label>
-                            <input type="text" name='nameOfMinister' value={formData.nameOfMinister} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+                            <input 
+                                type="text" 
+                                name="nameOfMinister" 
+                                value={formData.nameOfMinister} 
+                                onChange={handleChange} 
+                                className="w-full p-2 border border-gray-300 rounded" 
+                            />
                         </div>
 
                         <div>
                             <label className="block text-gray-700">Name of Church/Mosque to be Reported</label>
-                            <input type="text" name='church' value={formData.church} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+                            <input 
+                                type="text" 
+                                name="church" 
+                                value={formData.church} 
+                                onChange={handleChange} 
+                                className="w-full p-2 border border-gray-300 rounded" 
+                            />
                         </div>
 
                         <div>
                             <label className="block text-gray-700">Email of the Minister to be Reported</label>
-                            <input type="email" name='emailOfReported' value={formData.emailOfReported} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+                            <input 
+                                type="email" 
+                                name="emailOfReported" 
+                                value={formData.emailOfReported} 
+                                onChange={handleChange} 
+                                className="w-full p-2 border border-gray-300 rounded" 
+                            />
                         </div>
                     </div>
 
                     <div>
                         <label className="block text-gray-700">Report or Proof of Offense</label>
-                        <textarea name='offense' value={formData.offense} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded h-32"></textarea>
+                        <textarea 
+                            name="offense" 
+                            value={formData.offense} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border border-gray-300 rounded h-32"
+                        />
                     </div>
 
                     <div className="flex justify-between items-center">
                         <motion.button
-                            className='bg-blue-900 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
+                            className="bg-blue-900 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            type='submit'
+                            type="submit"
                             disabled={isLoading}
                         >
-                            {isLoading ? <AiOutlineLoading3Quarters className='animate-spin mx-auto' size={24} /> : "Send"}
+                            {isLoading ? <AiOutlineLoading3Quarters className="animate-spin mx-auto" size={24} /> : "Send"}
                         </motion.button>
                     </div>
                 </form>

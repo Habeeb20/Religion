@@ -1,38 +1,49 @@
 import mongoose from "mongoose";
 
 const reportSchema = new mongoose.Schema({
-    nameOfReporter:{
-        type:String,
-        required: true
+    nameOfReporter: {
+        type: String,
+        required: true,
+        trim: true 
     },
-    date:{
-        type:Date,
-        default: Date.now
-    },
-    emailOfReporter:{
-        type:String,
-        required:true
+    emailOfReporter: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function (v) {
+           
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            },
+            message: props => `${props.value} is not a valid email!`
+        }
     },
     phonenum: {
-        type:String,
-        required:true
+        type: String, 
+        required: true,
+        trim: true
     },
-    nameOfMinister:{
-        type:String,
+    nameOfMinister: {
+        type: String,
         required: true
     },
-    church:{
-        type:String,
+    church: {
+        type: String,
         required: true
     },
-    emailOfReported:{
-        type:String,
-        required: true
+    emailOfReported: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function (v) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); 
+            },
+            message: props => `${props.value} is not a valid email!`
+        }
     },
-    offense:{
-        type:String,
+    offense: {
+        type: String,
         required: true
     }
-}, {timestamps: true})
+}, { timestamps: true }); 
 
-export default mongoose.model("Report", reportSchema)
+export default mongoose.model("Report", reportSchema);

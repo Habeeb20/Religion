@@ -80,7 +80,7 @@ const AllLeaders = () => {
             <AiOutlineCheckCircle className="h-6 w-6" />
             <span>Verify Users</span>
           </NavLink>
-          <NavLink to="/reported" className="flex items-center space-x-2 text-gray-300 hover:text-white px-4 py-2 rounded-lg">
+          <NavLink to="/reportedaccounts" className="flex items-center space-x-2 text-gray-300 hover:text-white px-4 py-2 rounded-lg">
             <AiOutlineExclamationCircle className="h-6 w-6" />
             <span>Reported Accounts</span>
           </NavLink>
@@ -161,6 +161,7 @@ const AllLeaders = () => {
                 <li className="mb-2"><a href="/admin/users" className="block p-2">All users</a></li>
                 <li className="mb-2"><a href="/admin/leaders" className="block p-2">All leaders</a></li>
                 <li className="mb-2"><a href="/verify-users" className="block p-2">Verify users</a></li>
+                <li className="mb-2"><a href="/reportedaccounts" className="block p-2">reported accounts</a></li>
               </ul>
               <button onClick={toggleSidebar} className="mt-4 text-red-500">Close</button>
             </div>

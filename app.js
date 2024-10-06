@@ -21,6 +21,7 @@ import messageRoute from "./routes/chat/messageRoute.js"
 import userChatRoute from ".//routes/chat/userChatRoute.js"
 import reportrouter from "./routes/report.route.js";
 
+
 dotenv.config();
 
 const __dirname = path.resolve();
@@ -56,7 +57,11 @@ app.use('/chat/messages', messageRoute)
 app.use('/chat/users', userChatRoute)
 
 //report
+
 app.use('/report', reportrouter)
+// app.use('/report', (req, res)=>{
+//   console.log('body', req.body)
+// })
 
 
 

@@ -137,6 +137,7 @@ const AllUsers = () => {
               <li className="mb-2"><a href="/admin/users" className="block p-2">All users</a></li>
               <li className="mb-2"><a href="/admin/leaders" className="block p-2">All leaders</a></li>
               <li className="mb-2"><a href="/verify-users" className="block p-2">Verify users</a></li>
+              <li className="mb-2"><a href="/reportedaccounts" className="block p-2">reported accounts</a></li>
             </ul>
             <button onClick={toggleSidebar} className="mt-4 p-2 bg-red-500 text-white rounded">Close</button>
           </div>
