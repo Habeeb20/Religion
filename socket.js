@@ -91,7 +91,21 @@ io.on("connection", (socket) => {
     delete userSocketMap[userId]; // Remove the user from the map
     io.emit("getOnlineUsers", Object.keys(userSocketMap)); // Update the list of online users
   });
-});
+
+  socket.on('join_interview', (interviewId) => {
+    socket.join(interviewId);
+    console.log(`User ${socket.id} joined room ${interviewId}`);
+  });
+  
+
+  socket.on('send_message', ({ interviewId, message }) => {
+    io.to(interviewId).emit('receive_message', message);
+  });
+
+  socket.on('leave_interview', (interviewId) => {
+    socket.leave(interviewId);
+  })
+})
 
 
 

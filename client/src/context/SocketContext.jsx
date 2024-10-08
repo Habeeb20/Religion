@@ -1,5 +1,3 @@
-
-
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { createContext } from "react";
 import { useAuthContext } from "./AuthContext";
@@ -18,10 +16,10 @@ export const SocketContextProvider = ({ children }) => {
   const { authUser } = useAuthContext();
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
-  const [stream, setStream] = useState();
-  const [name, setName] = useState();
+  const [stream, setStream] = useState(null);
+  const [name, setName] = useState("");
   const [call, setCall] = useState({});
-  const [me, setMe] = useState('');
+  const [me, setMe] = useState("");
 
   const myVideo = useRef();
   const userVideo = useRef();
@@ -38,43 +36,32 @@ export const SocketContextProvider = ({ children }) => {
 
       setSocket(newSocket);
 
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((currentStream) => {
+          setStream(currentStream);
+
+          if (myVideo.current) {
+            myVideo.current.srcObject = currentStream;
+          }
+        });
+
+      newSocket.on('me', (id) => setMe(id));
+
+      newSocket.on('callUser', ({ from, name: callerName, signal }) => {
+        setCall({ isReceivingCall: true, from, name: callerName, signal });
+      });
+
       newSocket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
       return () => newSocket.close();
-    } else {
-      if (socket) {
-        socket.close();
-        setSocket(null);
-      }
+    } else if (socket) {
+      socket.close();
+      setSocket(null);
     }
-  }, [authUser, socket]);
-
-  useEffect(() => {
-    const newSocket = io("http://localhost:8000", {
-      transports:["websocket", 'polling']
-    });
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((currentStream) => {
-        setStream(currentStream);
-
-        if (myVideo.current) {
-          myVideo.current.srcObject = currentStream;
-        }
-      });
-
-    newSocket.on('me', (id) => setMe(id));
-
-    newSocket.on('callUser', ({ from, name: callerName, signal }) => {
-      setCall({ isReceivingCall: true, from, name: callerName, signal });
-    });
-
-    setSocket(newSocket); // set socket state after initialization
-
-    return () => newSocket.close(); // cleanup when component unmounts
-  }, []);
+  }, [authUser]); // Removed `socket` from dependencies to avoid infinite loops
 
   const answerCall = () => {
     setCallAccepted(true);

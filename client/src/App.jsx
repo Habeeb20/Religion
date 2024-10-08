@@ -42,6 +42,7 @@ import AboutUs from './pages/AboutUs';
 import Admin from './pages/admin/AdminDashboard';
 import UserLogin from './pages/UserLogin';
 import ReportedAccount from './pages/admin/ReportedAccount';
+import Video from './components/Video';
 const socket = io(import.meta.env.VITE_BACKEND_URL)
 const App = () => {
 
@@ -83,6 +84,7 @@ const App = () => {
           <Route path='/about' element={<AboutUs />} />
           <Route path='/userlogin' element={<UserLogin />} />
           <Route path='/reportedaccounts' element={<ReportedAccount />} />
+          <Route path='/video' element={<Video />} />
 
 
           <Route path='/admin/users' element={<AllUsers />} />

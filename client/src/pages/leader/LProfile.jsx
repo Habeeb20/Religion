@@ -83,7 +83,7 @@ const LProfile = () => {
           {/* Navigation for Profile Sections */}
           <div className="mt-8 w-full flex flex-col space-y-2">
             <Link to='/payment'> <button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Make payment to activate your account</button></Link>
-            <Link to='/chat'><button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Go to your chat</button></Link>
+            <Link to='/chatlogin'><button className="bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">Go to your chat</button></Link>
           </div>
         </div>
 
