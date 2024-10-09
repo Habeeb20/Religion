@@ -117,7 +117,7 @@ const App = () => {
           <Route path='lverify-email' element={<LverifyEmail />} />
           <Route path='lforgot-password' element={<LforgotPassword />} />
           <Route path='lresetpassword/:token' element={<LresetPassword />} />
-          <Route path='/leader/:id' element={<LleaderDetails />} />
+          <Route path='/lleader/:id' element={<LleaderDetails />} />
 
 
           <Route

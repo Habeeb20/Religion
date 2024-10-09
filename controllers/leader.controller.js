@@ -5,7 +5,8 @@ import crypto from "crypto"
 import  jwt from "jsonwebtoken";
 import cloudinary from "cloudinary"
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
-import bcryptjs from "bcryptjs"
+import bcryptjs from "bcryptjs";
+import mongoose from "mongoose";
 
 
 
@@ -314,16 +315,72 @@ const transporter = nodemailer.createTransport({
 
 
   //get other users profile
-  export const getOtherUserProfile = async (req, res) => {
-    try {
+  // export const getOtherUserProfile = async (req, res) => {
+  //   try {
    
-      const { userId } = req.params;
-      const user = await Leader.findById(userId).select('-password');
+  //     const { userId } = req.params;
+  //     const user = await Leader.findById(userId).select('-password');
+  
+  //     if (!user) {
+  //       console.log("user not found")
+  //       return res.status(404).json({ message: 'User not found' });
+  //     }
+  //     res.status(200).json({
+  //       success: true,
+  //       user: {
+  //         _id: user._id,
+  //         title: user.title,
+  //         firstname: user.firstname,
+  //         lastname: user.lastname,
+  //         ministryname: user.ministryname,
+  //         religion: user.religion,
+  //         email: user.email,
+  //         bio: user.bio,
+  //         address: user.address,
+  //         state: user.state,
+  //         country: user.country,
+  //         yearsInProfession: user.yearsInProfession,
+  //         localGovtArea: user.localGovtArea,
+  //         profilePicture: user.profilePicture,
+  //         lastLogin: user.lastLogin,
+  //         uniqueNumber: user.uniqueNumber,
+  //         accountName: user.accountName,
+  //         accountNumber: user.accountNumber,
+  //         bankName: user.bankName,
+  //         refereeemail: user.refereeemail,
+  //         refereename: user.refereename,
+  //         refereephone: user.refereephone
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ message: 'Something went wrong' });
+  //   }
+  // };
+  
+
+
+
+
+  export const getOtherUserProfile = async (req, res) => {
+    console.log('Request parameters:', req.params); 
+    try {
+      const { id } = req.params;
+      console.log(req.params)
+  
+  
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log("id not found")
+        return res.status(400).json({ success: false, message: 'Invalid user ID' });
+      }
+  
+      const user = await Leader.findById(id).select('-password');
   
       if (!user) {
-        console.log("user not found")
-        return res.status(404).json({ message: 'User not found' });
+        console.log("User not found");
+        return res.status(404).json({ success: false, message: 'User not found' });
       }
+  
       res.status(200).json({
         success: true,
         user: {
@@ -348,18 +405,14 @@ const transporter = nodemailer.createTransport({
           bankName: user.bankName,
           refereeemail: user.refereeemail,
           refereename: user.refereename,
-          refereephone: user.refereephone
+          refereephone: user.refereephone,
         }
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ success: false, message: 'Something went wrong' });
     }
   };
-  
-
-
-
 
 
 

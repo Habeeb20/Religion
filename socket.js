@@ -27,19 +27,6 @@ export const getReceiverSocketId = (receiverId) => {
 };
 
 
-// Middleware to handle authentication
-io.use((socket, next) => {
-  const token = socket.handshake.query.token;
-  if (token) {
-    jwt.verify(token, 'your_jwt_secret', (err, decoded) => {
-      if (err) return next(new Error('Authentication error'));
-      socket.user = decoded; // Attach user info
-      next();
-    });
-  } else {
-    next(new Error('Authentication error'));
-  }
-});
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
@@ -48,11 +35,10 @@ io.on("connection", (socket) => {
 
   // If a valid userId is provided
   if (userId && userId !== "undefined") {
-    userSocketMap[userId] = socket.id; // Store the socket ID associated with the user ID
+    userSocketMap[userId] = socket.id; 
   }
 
-  // Emit the list of online users (IDs) to all clients
-  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  io.emit("getOnlineUsers", socket.id);
 
   socket.on('newMessage', async (data) => {
     const newMessage = new Chat({

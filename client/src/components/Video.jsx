@@ -42,7 +42,9 @@ function Video() {
         console.error('Error accessing media devices:', error);
       });
 
-    socket.on('me', (id) => setMe(id));
+    socket.on('getOnlineUsers', (id) => {
+      console.log('id', id)
+      setMe(id)});
 
     socket.on('callUser', ({ from, name: callerName, signal }) => {
       setCall({ isReceivedCall: true, from, name: callerName, signal });

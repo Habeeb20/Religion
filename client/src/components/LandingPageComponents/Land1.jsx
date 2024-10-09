@@ -227,9 +227,9 @@ const Land1 = () => {
                 
                   {/* View Profile Button */}
                   <Link
-                    to={`/leader/${leader._id}`}
+                    to='/userlogin'
                     className="block mt-4 text-center text-indigo-900 bg-white border border-indigo-900 hover:bg-indigo-900 hover:text-white py-2 px-4 rounded-md"
-                  > <button onClick={() => handleClick()}>
+                  > <button >
                       View Profile
 
                   </button>
