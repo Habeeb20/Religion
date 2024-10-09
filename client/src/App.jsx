@@ -43,6 +43,7 @@ import Admin from './pages/admin/AdminDashboard';
 import UserLogin from './pages/UserLogin';
 import ReportedAccount from './pages/admin/ReportedAccount';
 import Video from './components/Video';
+import LeaderPayment from './pages/payment/LeaderPayment';
 const socket = io(import.meta.env.VITE_BACKEND_URL)
 const App = () => {
 
@@ -142,7 +143,9 @@ const App = () => {
           //payment
           <Route path='payment' element={<Payment />} />
 
+
           <Route path="/paymentverification" element={<PaymentSuccess />} />
+          <Route path="/leaderpayment" element={<LeaderPayment/> } />
 
 
           //chat

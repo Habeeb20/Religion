@@ -65,5 +65,27 @@ paymentRoute.post("/payment/verify", async (req, res) => {
     }
 })
 
+paymentRoute.post('/paystack-webhook', (req, res) => {
+    const secret = process.env.paystack_Api;
+  
+    const hash = crypto
+      .createHmac('sha512', secret)
+      .update(JSON.stringify(req.body))
+      .digest('hex');
+  
+    if (hash === req.headers['x-paystack-signature']) {
+      const event = req.body;
+  
+      if (event.event === 'charge.success') {
+      
+        const receiverAccount = findReceiverAccount(event.data.metadata.receiverId);
+        
+      }
+    }
+  
+    res.send(200);
+  });
+  
+
 
 export default paymentRoute
