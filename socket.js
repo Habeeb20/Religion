@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["http://localhost:5173", "http://localhost:5174",  "http://localhost:3000",  "http://localhost:3001"],
     methods: ["GET", "POST"],
   },
 });
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const userSocketMap = {}; // Holds the mapping of userId to socketId and can include names if necessary
+const userSocketMap = {}; 
 
 
 export const getReceiverSocketId = (receiverId) => {
