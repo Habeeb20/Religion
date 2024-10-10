@@ -186,9 +186,7 @@ function Video() {
               onChange={(e) => setIdToCall(e.target.value)}
               className='w-full p-2 bg-gray-700 text-white'
             />
-            <button onClick={handleChat} className={`w-full p-2 mt-2 ${!openChat ? 'bg-blue-500' : 'bg-red-500'} text-white`}>
-              {!openChat ? 'Open Chat' : 'Close Chat'}
-            </button>
+         
 
             {callAccepted && !callEnded ? (
               <button className='w-full bg-red-500 p-2 mt-2 text-white' onClick={leaveCall}>Hang Up</button>
