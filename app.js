@@ -40,7 +40,9 @@ app.use(cors({
   }));
 app.use(cookieParser())
 app.use(express.json());
-app.use('/uploads',express.static(path.join(__dirname, '/client/dist')));
+app.use(express.static('public'));
+
+app.use('/uploads',express.static(path.join(__dirname, '/client/index.html')));
 app.use(morgan('dev'))
 app.use('/api/users', router)
 app.use('/api/leaders', leaderrouter)
@@ -69,7 +71,7 @@ app.use('/report', reportrouter)
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Path where the uploaded files will be stored
+    cb(null, 'uploads/'); 
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
