@@ -6,7 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { MdCancel } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 
-const socket = io('http://localhost:8000');
+const socket = io(`${process.env.REACT_APP_BACKEND_URL}`);
 
 function Video() {
   const [stream, setStream] = useState(null);
@@ -51,7 +51,7 @@ function Video() {
     });
 
     return () => {
-      socket.off('me');
+      socket.off('getOnlineUsers');
       socket.off('callUser');
     };
   }, []);
@@ -88,6 +88,10 @@ function Video() {
   };
 
   const answerCall = () => {
+    if (!call.signal) {
+      console.error('No call signal to answer.');
+      return;
+    }
     console.log('Answering call from:', call.from);
     setCallAccepted(true);
 
@@ -105,11 +109,19 @@ function Video() {
       }
     });
 
+    peer.on('error', (err) => {
+      console.error('Peer error:', err);
+    });
+
     peer.signal(call.signal);
     connectionRef.current = peer;
   };
 
   const callUser = (id) => {
+    if (!id) {
+      console.error('No user ID to call.');
+      return;
+    }
     console.log('Calling user:', id);
     const peer = new Peer({ initiator: true, trickle: false, stream });
 
@@ -131,19 +143,25 @@ function Video() {
       }
     });
 
+    peer.on('error', (err) => {
+      console.error('Peer error:', err);
+    });
+
     connectionRef.current = peer;
   };
 
   const leaveCall = () => {
     console.log('Ending call');
     setCallEnded(true);
-    connectionRef.current.destroy();
+    if (connectionRef.current) {
+      connectionRef.current.destroy();
+    }
     window.location.reload();
   };
 
   const handleChat = () => {
     console.log('Toggling chat:', !openChat);
-    setOpenChat(!openChat);
+    setOpenChat((prev) => !prev);
   };
 
   return (
@@ -160,11 +178,11 @@ function Video() {
         )}
         {/* -------interviewee stream------ */}
         <div className="bg-cover bg-gray-950 block w-screen h-screen">
-          {!callAccepted && !callEnded && (
+          {callAccepted && !callEnded && (
             <video className="block w-screen h-screen" playsInline ref={userVideo} autoPlay />
           )}
-          {/* Show answer button if there is a call received and not yet accepted */}
-          {call.isReceivedCall && !callAccepted && (
+
+          {!callAccepted && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <button
                 className="flex items-center justify-center gap-2 text-xl px-4 py-2 bg-red-400 text-white rounded-full"
@@ -202,20 +220,13 @@ function Video() {
               <div className="flex flex-col items-center justify-start w-3/4 gap-2">
                 <label className="text-center font-semibold text-white text-xl">Make a call</label>
                 <input
-                  className="mx-auto w-full py-2 bg-transparent border-b-2 rounded-sm text-gray-100 px-2 outline-none"
+                  className="mx-auto w-full py-2 bg-transparent border-b-2 text-gray-100 px-2 bg-blue-300 outline-none"
                   value={idToCall}
-                  placeholder="Id to call"
-                  type="text"
                   onChange={(e) => setIdToCall(e.target.value)}
+                  placeholder="Enter Id"
                 />
                 <button
-                  onClick={handleChat}
-                  className={`${!openChat ? 'block' : 'hidden'} px-4 py-2 rounded-sm w-full mt-2 ml-2 bg-blue-500 text-white`}
-                >
-                  Open chat
-                </button>
-                <button
-                  className="text-white bg-gray-700 rounded-sm p-2 px-4 w-full"
+                  className="bg-gray-700 p-2 px-4 rounded-sm text-white w-full"
                   onClick={() => callUser(idToCall)}
                 >
                   <BiPhone /> Call
@@ -225,38 +236,6 @@ function Video() {
           </form>
         </div>
       </div>
-      {/* -----Chat Section----- */}
-      {openChat && (
-        <div className="absolute top-0 right-0 w-1/3 h-full flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center justify-start h-full w-full p-4 bg-white shadow-lg">
-            <h1 className="font-semibold text-center text-xl">Chat</h1>
-            <div className="flex flex-col items-center justify-start overflow-y-auto h-full w-full p-2 border">
-              {messages.map((msg, index) => (
-                <div key={index} className="flex flex-col">
-                  <h2 className="font-bold">{msg.author}</h2>
-                  <p>{msg.message}</p>
-                  <p className="text-xs text-gray-500">{msg.time}</p>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2 w-full">
-              <input
-                type="text"
-                placeholder="Type your message here..."
-                className="w-full border border-gray-400"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-              />
-              <button
-                className="bg-blue-500 text-white rounded px-4"
-                onClick={sendMessage}
-              >
-                Send
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
