@@ -288,6 +288,10 @@ const LleaderDetails = () => {
               <input type="email" value={leader.email} className="w-full p-2 border rounded" readOnly />
             </div>
             <div>
+              <label className="text-gray-600">Phone num</label>
+              <input type="email" value={leader.phonenum} className="w-full p-2 border rounded" readOnly />
+            </div>
+            <div>
               <label className="text-gray-600">Country</label>
               <input type="text" value={leader.country} className="w-full p-2 border rounded" readOnly />
             </div>

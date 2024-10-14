@@ -44,10 +44,10 @@ const transporter = nodemailer.createTransport({
   
 
   export const signup = async(req, res) => {
-    const {title, firstname, lastname,ministryname, email, password, bio, religion,category,country,state,localGovtArea, address,yearsInProfession,accountNumber,accountName,bankName,refereephone, relationship, refereename, refereeemail } = req.body;
+    const {title, firstname, lastname,ministryname,phonenum, email, password, bio, religion,category,country,state,localGovtArea, address,yearsInProfession,accountNumber,accountName,bankName,refereephone, relationship, refereename, refereeemail } = req.body;
 
     try {
-        if(!title || !firstname || !lastname || !ministryname || !email || !password || !bio || !religion ||!category ||!address || !country ||!yearsInProfession|| !state || !localGovtArea ||!accountName || !accountNumber ||!bankName || !refereephone || !relationship || !refereename || !refereeemail || !req.file) {
+        if(!title || !firstname || !lastname || !phonenum || !ministryname || !email || !password || !bio || !religion ||!category ||!address || !country ||!yearsInProfession|| !state || !localGovtArea ||!accountName || !accountNumber ||!bankName || !refereephone || !relationship || !refereename || !refereeemail || !req.file) {
             console.log('error')
             return res.status(400).json({message:" all feilds must be filled in"})
         }
@@ -72,6 +72,7 @@ const transporter = nodemailer.createTransport({
             lastname,
             ministryname,
             bio,
+            phonenum,
             religion,
             email,
             password: hashedPassword,
@@ -197,7 +198,7 @@ const transporter = nodemailer.createTransport({
 
 
   export const updateUserProfile = async(req, res) => {
-    const {title, firstname, lastname,ministryname, email,password, bio,address, religion,category,country,state,localGovtArea,refereename, refereeemail, accountName, accountNumber, bankName, refereephone, relationship } = req.body;
+    const {title, firstname, lastname,ministryname,phonenum, email,password, bio,address, religion,category,country,state,localGovtArea,refereename, refereeemail, accountName, accountNumber, bankName, refereephone, relationship } = req.body;
 
     try {
         const userId = req.user?.id;
@@ -211,6 +212,7 @@ const transporter = nodemailer.createTransport({
         user.title = title || user.title;
         user.ministryname = ministryname || user.ministryname;
         user.bio = bio || user.bio;
+        user.phonenum = phonenum || user.phonenum;
         user.religion = religion || user.religion;
         user.category = category || user.category;
         user.email = email || user.email;
@@ -391,6 +393,7 @@ const transporter = nodemailer.createTransport({
           ministryname: user.ministryname,
           religion: user.religion,
           email: user.email,
+          phonenum: user.phonenum,
           bio: user.bio,
           address: user.address,
           state: user.state,
@@ -449,6 +452,7 @@ const transporter = nodemailer.createTransport({
           ministryname: user.ministryname,
           religion: user.religion,
           email: user.email,
+          phonenum: user.phonenum,
           bio: user.bio,
           address: user.address,
           state: user.state,

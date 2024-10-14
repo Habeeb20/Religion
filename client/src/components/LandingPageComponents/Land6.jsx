@@ -22,7 +22,7 @@ const Land6 = () => {
   }, []);
 
   const MinisterCard = ({ minister }) => {
-    const { title, firstname, lastname, bio, religion, ministryname, email, profilePicture, yearsInProfession,state,localGovtArea, address } = minister;
+    const { title, firstname, lastname, bio, religion, ministryname,phonenum, email, profilePicture, yearsInProfession,state,localGovtArea, address } = minister;
 
     const userEmail = "user@example.com"; // Replace this with the actual user's email
 
@@ -45,6 +45,7 @@ const Land6 = () => {
           </div>
         </div>
         <p className="text-black-700 mb-2">bio: {bio}</p>
+        <p className="text-black-700 mb-2">phone num: {phonenum}</p>
         <p className="text-black-500 mb-2">years of being a/an {title}: {yearsInProfession}  years</p>
         <p className="text-black-500 mb-2">state: {state}</p>
         <p className="text-black-500 mb-2">LGA: {localGovtArea}</p>

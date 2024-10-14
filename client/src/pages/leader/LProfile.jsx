@@ -142,6 +142,7 @@ const LProfile = () => {
                   )}
                   <p className="text-gray-600"><strong>Last Name:</strong> {userData.lastname}</p>
                   <p className="text-gray-600"><strong>Email:</strong> {userData.email}</p>
+                  <p className="text-gray-600"><strong>Phone numb:</strong> {userData.phonenum}</p>
                   <p className="text-gray-600"><strong>state:</strong> {userData.state}</p>
                   <p className="text-gray-600"><strong>LGA:</strong> {userData.localGovtArea}</p>
                   <p className="text-gray-600"><strong>Years in Profession:</strong> {userData.yearsInProfession} years</p>
@@ -207,7 +208,7 @@ const LProfile = () => {
                 <p className="text-gray-600"><strong>Referee name:</strong> {userData.refereename}</p>
                 <p className="text-gray-600"><strong>Referee phone number:</strong> {userData.refereephone}</p>
                 <p className="text-gray-600"><strong>Referee email:</strong> {userData.refereeemail}</p>
-                <p className="text-gray-600"><strong>Relationshipt with referee:</strong> {userData.relationship}</p>
+                <p className="text-gray-600"><strong>Relationship with referee:</strong> {userData.relationship}</p>
               <h1 className="text-xl font-bold mb-4">Reviews</h1>
               <p className="text-gray-600">This is where the user reviews would appear...</p>
             </div>

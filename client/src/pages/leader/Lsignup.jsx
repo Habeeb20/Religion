@@ -17,6 +17,7 @@ const Lsignup = () => {
         lastname: '',
         ministryname: '',
         email: '',
+        phonenum: '',
         password: '',
         bio: '',
         religion: '',
@@ -298,6 +299,9 @@ const Lsignup = () => {
 
                     {/* Last Name */}
                     <input type="text" name="lastname" placeholder="Last Name" value={formData.lastname} onChange={handleChange} className="w-full p-2 border rounded" disabled={isLoading} />
+
+                    {/* phone number */}
+                      <input type="number" name="phonenum" placeholder="phone number" value={formData.phonenum} onChange={handleChange} className="w-full p-2 border rounded" disabled={isLoading} />
 
                     {/* Ministry Name */}
                     <input type="text" name="ministryname" placeholder="Ministry Name" value={formData.ministryname} onChange={handleChange} className="w-full p-2 border rounded" disabled={isLoading} />
