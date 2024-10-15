@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+// import logo from './../assets/logo eriligion.png'
+import logo from './../assets/religion.png'
 
 const Navbar = () => {
   const [activePage, setActivePage] = useState('Home');
@@ -21,7 +22,14 @@ const Navbar = () => {
     <>
      <nav className="bg-indigo-900 text-white fixed top-0 w-full z-50 shadow-lg   ">
       <div className="container mx-auto flex justify-between items-center py-1 px-6 m-1">
-        <h1 className="text-2xl font-bold text-white">e-religion</h1>
+      <Link to="/">
+            <img
+              src={logo}
+              alt="e-religion logo"
+              className="h-12 w-auto object-contain hover:scale-105 transition-transform duration-300 ease-in-out"
+            />
+          </Link>
+        {/* <h1 className="text-2xl font-bold text-white">e-religion</h1> */}
 
         {/* Mobile hamburger menu */}
         <button
